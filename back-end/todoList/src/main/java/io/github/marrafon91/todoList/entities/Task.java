@@ -1,4 +1,4 @@
-package io.github.marrafon91.todoList.task;
+package io.github.marrafon91.todoList.entities;
 
 import jakarta.persistence.*;
 
@@ -11,7 +11,7 @@ public class Task {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     private String title;
     private String description;
     private boolean done;
@@ -19,10 +19,14 @@ public class Task {
     private LocalDate dueDate;
     private int priority;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
     public Task() {
     }
 
-    public Task(long id, String title, String description, boolean done, LocalDate createdAt, LocalDate dueDate, int priority) {
+    public Task(Long id, String title, String description, boolean done, LocalDate createdAt, LocalDate dueDate, int priority, User user) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -30,13 +34,14 @@ public class Task {
         this.createdAt = createdAt;
         this.dueDate = dueDate;
         this.priority = priority;
+        this.user = user;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -88,11 +93,19 @@ public class Task {
         this.priority = priority;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Task task = (Task) o;
-        return id == task.id;
+        return Objects.equals(id, task.id);
     }
 
     @Override
