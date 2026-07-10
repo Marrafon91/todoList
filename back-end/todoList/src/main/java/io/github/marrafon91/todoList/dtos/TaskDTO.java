@@ -15,13 +15,7 @@ public record TaskDTO(
         LocalDate dueDate,
         Priority priority,
 
-        Long userId,
-        String userName,
-
-        Long categoryId,
-        String categoryName,
-        String categoryColor
-
+        CategoryDTO category
 ) {
 
     public TaskDTO(Task entity) {
@@ -33,13 +27,7 @@ public record TaskDTO(
                 entity.getCreatedAt(),
                 entity.getDueDate(),
                 entity.getPriority(),
-
-                entity.getUser().getId(),
-                entity.getUser().getName(),
-
-                entity.getCategory().getId(),
-                entity.getCategory().getName(),
-                entity.getCategory().getColor()
+                new CategoryDTO(entity.getCategory())
         );
     }
 }
