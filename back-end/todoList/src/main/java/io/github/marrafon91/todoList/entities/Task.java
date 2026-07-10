@@ -12,12 +12,19 @@ public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(nullable = false)
     private String title;
+    @Column(length = 500)
     private String description;
+    @Column(nullable = false)
     private boolean done;
+    @Column(name = "created_at", nullable = false)
     private LocalDate createdAt;
+    @Column(name = "due_date")
     private LocalDate dueDate;
-    private int priority;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Priority priority;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -26,7 +33,7 @@ public class Task {
     public Task() {
     }
 
-    public Task(Long id, String title, String description, boolean done, LocalDate createdAt, LocalDate dueDate, int priority, User user) {
+    public Task(Long id, String title, String description, boolean done, LocalDate createdAt, LocalDate dueDate, Priority priority, User user) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -85,11 +92,11 @@ public class Task {
         this.dueDate = dueDate;
     }
 
-    public int getPriority() {
+    public Priority getPriority() {
         return priority;
     }
 
-    public void setPriority(int priority) {
+    public void setPriority(Priority priority) {
         this.priority = priority;
     }
 
