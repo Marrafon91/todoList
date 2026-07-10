@@ -17,7 +17,7 @@ public class Category {
     @Column(nullable = false, length = 100)
     private String name;
 
-    @Column(nullable = false, length = 10)
+    @Column(nullable = false, length = 7)
     private String color;
 
     @OneToMany(mappedBy = "category")
