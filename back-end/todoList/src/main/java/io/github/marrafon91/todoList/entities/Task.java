@@ -22,6 +22,7 @@ public class Task {
     private LocalDate createdAt;
     @Column(name = "due_date")
     private LocalDate dueDate;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Priority priority;
@@ -30,10 +31,14 @@ public class Task {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
+
     public Task() {
     }
 
-    public Task(Long id, String title, String description, boolean done, LocalDate createdAt, LocalDate dueDate, Priority priority, User user) {
+    public Task(Long id, String title, String description, boolean done, LocalDate createdAt, LocalDate dueDate, Priority priority, User user, Category category) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -42,6 +47,7 @@ public class Task {
         this.dueDate = dueDate;
         this.priority = priority;
         this.user = user;
+        this.category = category;
     }
 
     public Long getId() {
@@ -106,6 +112,14 @@ public class Task {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     @Override
