@@ -1,17 +1,15 @@
 package io.github.marrafon91.todoList.dtos;
 
 import io.github.marrafon91.todoList.entities.Priority;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
 
 public record TaskInsertDTO(
-        @NotBlank(message = "O título é obrigatório")
-        @Size(min = 3, max = 100)
+        @Size(min = 3, max = 100, message = "O título é obrigatório")
         String title,
-        @Size(max = 500)
+        @Size(min = 10, max = 500, message = "A Descrição deve ter de 10 a 500 caracteres")
         String description,
         @NotNull(message = "A prioridade é obrigatória")
         Priority priority,

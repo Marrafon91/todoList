@@ -6,7 +6,7 @@ import io.github.marrafon91.todoList.dtos.TaskUpdateDTO;
 import io.github.marrafon91.todoList.entities.Category;
 import io.github.marrafon91.todoList.entities.Task;
 import io.github.marrafon91.todoList.exceptions.DatabaseException;
-import io.github.marrafon91.todoList.exceptions.ResourceNotFound;
+import io.github.marrafon91.todoList.exceptions.ResourceNotFoundException;
 import io.github.marrafon91.todoList.repositories.CategoryRepository;
 import io.github.marrafon91.todoList.repositories.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +42,7 @@ public class TaskService {
     public TaskDTO findById(Long id) {
         return taskRepository.findById(id)
                 .map(TaskDTO::new)
-                .orElseThrow(() -> new ResourceNotFound("Tarefa com ID " + id + " não encontrada"));
+                .orElseThrow(() -> new ResourceNotFoundException("Tarefa com ID " + id + " não encontrada"));
     }
 
     @Transactional
@@ -56,7 +56,7 @@ public class TaskService {
     @Transactional
     public TaskDTO update(Long id, TaskUpdateDTO dto) {
         Task task = taskRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFound(
+                .orElseThrow(() -> new ResourceNotFoundException(
                         "Tarefa com ID " + id + " não encontrada"));
         dtoToEntityUpdate(dto, task);
         task = taskRepository.save(task);
@@ -67,7 +67,7 @@ public class TaskService {
     public void delete(Long id) {
 
         if (!taskRepository.existsById(id)) {
-            throw new ResourceNotFound("Tarefa com ID " + id + " não encontrada");
+            throw new ResourceNotFoundException("Tarefa com ID " + id + " não encontrada");
         }
 
         try {
@@ -80,7 +80,7 @@ public class TaskService {
     private Category getCategory(Long id) {
         return categoryRepository.findById(id)
                 .orElseThrow(() ->
-                        new ResourceNotFound(
+                        new ResourceNotFoundException(
                                 "Categoria com ID " + id + " não encontrada"));
     }
 
