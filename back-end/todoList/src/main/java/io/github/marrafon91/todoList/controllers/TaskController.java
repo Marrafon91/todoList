@@ -16,7 +16,7 @@ public class TaskController {
     private TaskService taskService;
 
     @GetMapping
-    public ResponseEntity<List<TaskDTO>> findALl(
+    public ResponseEntity<List<TaskDTO>> findAll(
             @RequestParam(required = false) String title) {
         return ResponseEntity.ok(taskService.findAll(title));
     }
