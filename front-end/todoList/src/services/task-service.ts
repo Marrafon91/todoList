@@ -1,19 +1,20 @@
 import { api } from '../utils/api';
+import type { TaskDTO, TaskInsertDTO, TaskUpdateDTO } from '../models/task'
 
 export function findAllTasks() {
-  return api.get('/api/tasks');
+  return api.get<TaskDTO[]>('/api/tasks');
 }
 
 export function findTaskById(id: number) {
-  return api.get(`/api/tasks/${id}`);
+  return api.get<TaskDTO>(`/api/tasks/${id}`);
 }
 
-export function insertTask(body: any) {
-  return api.post('/api/tasks', body);
+export function insertTask(body: TaskInsertDTO) {
+  return api.post<TaskDTO>('/api/tasks', body);
 }
 
-export function updateTask(id: number, body: any) {
-  return api.put(`/api/tasks/${id}`, body);
+export function updateTask(id: number, body: TaskUpdateDTO) {
+  return api.put<TaskDTO>(`/api/tasks/${id}`, body);
 }
 
 export function deleteTask(id: number) {

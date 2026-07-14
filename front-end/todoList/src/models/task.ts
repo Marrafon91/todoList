@@ -10,3 +10,18 @@ export type TaskDTO = {
   priority: string;
   category: CategoryDTO;
 };
+export type TaskInsertDTO = {
+  title: string;
+  description: string;
+  priority: string;
+  categoryId: number;
+  dueDate: string;
+};
+
+export type TaskUpdateDTO = {
+  title: string;
+  description: string;
+  priority: string;
+  categoryId: number;
+  dueDate: string;
+};

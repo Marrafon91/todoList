@@ -12,7 +12,7 @@ export default function App() {
         const response = await findAllTasks();
         setTasks(response.data);
       } catch {
-        setError("Não foi possível carregar as tarefas.");
+        setError('Não foi possível carregar as tarefas.');
       }
     }
 
