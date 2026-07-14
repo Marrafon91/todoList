@@ -16,15 +16,14 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<CustomError> resourceNotFound(ResourceNotFoundException e, HttpServletRequest request) {
         HttpStatus status = HttpStatus.NOT_FOUND;
-        CustomError error = new CustomError(
-                Instant.now(), status.value(), e.getMessage(), request.getRequestURI());
+        CustomError error = new CustomError(Instant.now(), status.value(), e.getMessage(), request.getRequestURI());
         return ResponseEntity.status(status).body(error);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ValidationError> methodArgumentNotValid(MethodArgumentNotValidException e,HttpServletRequest request) {
+    public ResponseEntity<ValidationError> methodArgumentNotValid(MethodArgumentNotValidException e, HttpServletRequest request) {
         HttpStatus status = HttpStatus.UNPROCESSABLE_CONTENT;
-        ValidationError error = new ValidationError(Instant.now(),status.value(),"Validation error",request.getRequestURI());
+        ValidationError error = new ValidationError(Instant.now(), status.value(), "Erro de Validação", request.getRequestURI());
         for (FieldError f : e.getBindingResult().getFieldErrors()) {
             error.addError(f.getField(), f.getDefaultMessage());
         }

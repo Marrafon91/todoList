@@ -56,8 +56,8 @@ public class TaskService {
     @Transactional
     public TaskDTO update(Long id, TaskUpdateDTO dto) {
         Task task = taskRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        "Tarefa com ID " + id + " não encontrada"));
+                .orElseThrow(() -> new ResourceNotFoundException("Tarefa com ID " + id + " não encontrada"));
+
         dtoToEntityUpdate(dto, task);
         task = taskRepository.save(task);
         return new TaskDTO(task);
@@ -79,9 +79,7 @@ public class TaskService {
 
     private Category getCategory(Long id) {
         return categoryRepository.findById(id)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException(
-                                "Categoria com ID " + id + " não encontrada"));
+                .orElseThrow(() -> new ResourceNotFoundException("Categoria com ID " + id + " não encontrada"));
     }
 
     private void dtoToEntityInsert(TaskInsertDTO dto, Task task) {
