@@ -39,6 +39,10 @@ api.interceptors.response.use(
           console.error('404 - Recurso não encontrado');
           break;
 
+        case 409:
+          console.error('409 - Falha de integridade referencial');
+          break;
+
         case 422:
           console.error('422 - Erro de validação');
           break;
