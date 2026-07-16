@@ -4,6 +4,9 @@
   --tdl-bg-primary: #fcfcfc;
   --tdl-font-primary: #2f3a4d;
   --tdl-btn-primary: #4f6bed;
+
+  --tdl-color-primary: #4f6bed;
+  --tdl-color-secundary: #fcfcfc;
 }
 
 * {

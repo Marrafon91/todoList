@@ -1,0 +1,18 @@
+.category-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+}
+
+.category-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.category-color {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}

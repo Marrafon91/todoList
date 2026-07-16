@@ -1,0 +1,24 @@
+.sidebar-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 14px;
+  border-radius: 12px;
+  margin-bottom: 8px;
+  cursor: pointer;
+}
+
+.sidebar-item:hover {
+  background: #eff6ff;
+}
+
+.sidebar-item-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.active {
+  background: #dbeafe;
+  color: #2563eb;
+}
