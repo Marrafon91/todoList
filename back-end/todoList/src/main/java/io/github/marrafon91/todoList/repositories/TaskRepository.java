@@ -1,8 +1,11 @@
 package io.github.marrafon91.todoList.repositories;
 
+import io.github.marrafon91.todoList.dtos.PrioritySummaryDTO;
+import io.github.marrafon91.todoList.entities.Priority;
 import io.github.marrafon91.todoList.entities.Task;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
@@ -14,4 +17,21 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
 
     @EntityGraph(attributePaths = "category")
     List<Task> findByTitleContainingIgnoreCase(String title);
+
+    Long countByDoneFalse();
+
+    Long countByDoneTrue();
+
+    @Query("""
+            SELECT new io.github.marrafon91.todoList.dtos.PrioritySummaryDTO(
+                t.priority,
+                '',
+                COUNT(t.id)
+            )
+            FROM Task t
+            GROUP BY t.priority
+            ORDER BY t.priority
+            """)
+    List<PrioritySummaryDTO> findPrioritySummary();
+
 }

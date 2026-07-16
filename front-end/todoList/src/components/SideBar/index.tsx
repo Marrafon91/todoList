@@ -59,7 +59,7 @@ export default function Sidebar() {
       <SidebarItem
         icon={<ListTodo size={18} />}
         title="Todas"
-        quantity={7}
+        quantity={8}
         active
       />
 
