@@ -9,6 +9,7 @@ export default function App() {
         <Route path="/" element={<Home />}>
           <Route index element={<MainContent />} />
         </Route>
+        {/* <Route path="*" element={<NotFound />} /> */}
       </Routes>
     </BrowserRouter>
   );

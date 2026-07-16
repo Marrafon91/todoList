@@ -21,8 +21,6 @@ export default function MainContent() {
 
   return (
     <div>
-      <h1>Teste da API</h1>
-
       {tasks.map((task) => (
         <div key={task.id}>
           <h2>{task.title}</h2>
