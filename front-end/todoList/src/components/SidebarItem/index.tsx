@@ -1,24 +1,16 @@
 import './style.css';
-import type { ReactNode } from 'react';
 
 type Props = {
-  icon: ReactNode;
+  icon: React.ReactNode;
   title: string;
   quantity: number;
-  active?: boolean;
 };
 
-export default function SidebarItem({
-  icon,
-  title,
-  quantity,
-  active = false,
-}: Props) {
+export default function SidebarItem({ icon, title, quantity }: Props) {
   return (
-    <div className={active ? 'sidebar-item active' : 'sidebar-item'}>
-      <div className="sidebar-item-left">
+    <div className="sidebar-item">
+      <div className="sidebar-left">
         {icon}
-
         <span>{title}</span>
       </div>
 
