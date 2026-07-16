@@ -1,9 +1,11 @@
 package io.github.marrafon91.todoList.dtos;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.github.marrafon91.todoList.entities.Priority;
 import io.github.marrafon91.todoList.entities.Task;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public record TaskDTO(
 
@@ -11,7 +13,8 @@ public record TaskDTO(
         String title,
         String description,
         boolean done,
-        LocalDate createdAt,
+        @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+        LocalDateTime createdAt,
         LocalDate dueDate,
         Priority priority,
 

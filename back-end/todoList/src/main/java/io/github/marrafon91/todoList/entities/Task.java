@@ -1,8 +1,10 @@
 package io.github.marrafon91.todoList.entities;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
@@ -18,8 +20,9 @@ public class Task {
     private String description;
     @Column(nullable = false)
     private boolean done;
-    @Column(name = "created_at", nullable = false)
-    private LocalDate createdAt;
+    @CreationTimestamp
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private LocalDateTime createdAt;
     @Column(name = "due_date")
     private LocalDate dueDate;
 
@@ -38,7 +41,7 @@ public class Task {
     public Task() {
     }
 
-    public Task(Long id, String title, String description, boolean done, LocalDate createdAt, LocalDate dueDate, Priority priority, User user, Category category) {
+    public Task(Long id, String title, String description, boolean done, LocalDateTime createdAt, LocalDate dueDate, Priority priority, User user, Category category) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -82,11 +85,11 @@ public class Task {
         this.done = done;
     }
 
-    public LocalDate getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDate createdAt) {
+    public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
 

@@ -1,0 +1,32 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+:root {
+  --tdl-bg-primary: #fcfcfc;
+  --tdl-font-primary: #2f3a4d;
+  --tdl-btn-primary: #4f6bed;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Inter", sans-serif;
+}
+
+a,
+a:hover {
+  text-decoration: none;
+  color: unset;
+  display: inline-block;
+}
+
+body,
+html {
+  background-color: var(--tdl-bg-primary);
+}
+
+.container {
+  width: 100%;
+  max-width: 960px;
+  margin: 0 auto;
+}

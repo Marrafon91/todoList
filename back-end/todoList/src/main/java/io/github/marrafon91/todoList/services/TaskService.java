@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -92,7 +93,6 @@ public class TaskService {
         task.setCategory(getCategory(dto.categoryId()));
 
         task.setDone(false);
-        task.setCreatedAt(LocalDate.now());
     }
 
     private void dtoToEntityUpdate(TaskUpdateDTO dto, Task task) {
