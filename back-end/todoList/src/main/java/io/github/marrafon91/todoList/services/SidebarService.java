@@ -23,20 +23,21 @@ public class SidebarService {
     @Transactional(readOnly = true)
     public SidebarDTO findSidebar() {
 
-        List<PrioritySummaryDTO> priorities = taskRepository.findPrioritySummary()
+        List<PrioritySummaryDTO> priorities = taskRepository.findPrioritySummaryHigh()
                 .stream()
-                .map(p -> new PrioritySummaryDTO(p.priority(), getLabel(p.priority()), p.quantity()))
+                .filter(p -> p.priority() == Priority.HIGH)
+                .map(p -> new PrioritySummaryDTO(
+                        p.priority(),
+                        "Alta prioridade",
+                        p.quantity()))
                 .toList();
 
-        return new SidebarDTO(taskRepository.count(), taskRepository.countByDoneFalse(), taskRepository.countByDoneTrue(),
-                priorities, categoryRepository.findCategorySummary());
-    }
-
-    private String getLabel(Priority priority) {
-        return switch (priority) {
-            case HIGH -> "Alta prioridade";
-            case MEDIUM -> "Média prioridade";
-            case LOW -> "Baixa prioridade";
-        };
+        return new SidebarDTO(
+                taskRepository.count(),
+                taskRepository.countByDoneFalse(),
+                taskRepository.countByDoneTrue(),
+                priorities,
+                categoryRepository.findCategorySummary()
+        );
     }
 }

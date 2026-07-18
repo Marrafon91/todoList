@@ -50,4 +50,17 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
             """)
     Long countHighPriorityTasks();
 
+    @Query("""
+                SELECT new io.github.marrafon91.todoList.dtos.PrioritySummaryDTO(
+                    t.priority,
+                    'Alta prioridade',
+                    COUNT(t)
+                )
+                FROM Task t
+                WHERE t.priority = io.github.marrafon91.todoList.entities.Priority.HIGH
+                GROUP BY t.priority
+            """)
+    List<PrioritySummaryDTO> findPrioritySummaryHigh();
+
+
 }
