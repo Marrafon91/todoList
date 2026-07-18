@@ -4,11 +4,12 @@ type Props = {
   icon: React.ReactNode;
   title: string;
   quantity: number;
+  active?: boolean;
 };
 
-export default function SidebarItem({ icon, title, quantity }: Props) {
+export default function SidebarItem({ icon, title, quantity, active }: Props) {
   return (
-    <div className="sidebar-item">
+    <div className={`sidebar-item ${active ? 'active' : ''}`}>
       <div className="sidebar-left">
         {icon}
         <span>{title}</span>

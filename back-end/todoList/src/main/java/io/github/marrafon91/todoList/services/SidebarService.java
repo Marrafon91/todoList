@@ -25,20 +25,11 @@ public class SidebarService {
 
         List<PrioritySummaryDTO> priorities = taskRepository.findPrioritySummary()
                 .stream()
-                .map(p -> new PrioritySummaryDTO(
-                        p.priority(),
-                        getLabel(p.priority()),
-                        p.quantity()
-                ))
+                .map(p -> new PrioritySummaryDTO(p.priority(), getLabel(p.priority()), p.quantity()))
                 .toList();
 
-        return new SidebarDTO(
-                taskRepository.count(),
-                taskRepository.countByDoneFalse(),
-                taskRepository.countByDoneTrue(),
-                priorities,
-                categoryRepository.findCategorySummary()
-        );
+        return new SidebarDTO(taskRepository.count(), taskRepository.countByDoneFalse(), taskRepository.countByDoneTrue(),
+                priorities, categoryRepository.findCategorySummary());
     }
 
     private String getLabel(Priority priority) {

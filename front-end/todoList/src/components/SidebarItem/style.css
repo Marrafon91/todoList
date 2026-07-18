@@ -2,23 +2,23 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 14px;
+  padding: 12px 15px;
   border-radius: 12px;
-  margin-bottom: 8px;
   cursor: pointer;
+  transition: 0.2s;
 }
 
 .sidebar-item:hover {
-  background: #eff6ff;
+  background: #f3f4f6;
 }
 
-.sidebar-item-left {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.active {
+.sidebar-item.active {
   background: #dbeafe;
   color: #2563eb;
+}
+
+.sidebar-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
