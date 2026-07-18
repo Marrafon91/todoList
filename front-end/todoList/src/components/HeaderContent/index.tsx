@@ -20,11 +20,17 @@ export default function HeaderContent() {
   }, []);
 
   const dataFormatada = dashboard
-    ? new Date(dashboard.currentDate).toLocaleDateString('pt-BR', {
-        weekday: 'long',
-        day: 'numeric',
-        month: 'long',
-      })
+    ? (() => {
+        const data = new Date(`${dashboard.currentDate}T00:00:00`);
+
+        const texto = data.toLocaleDateString('pt-BR', {
+          weekday: 'long',
+          day: 'numeric',
+          month: 'long',
+        });
+
+        return texto.charAt(0).toUpperCase() + texto.slice(1);
+      })()
     : '';
 
   return (
