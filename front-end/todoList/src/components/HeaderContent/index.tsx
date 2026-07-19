@@ -5,14 +5,15 @@ import { findDashboard } from '../../services/dashboard-service';
 
 export default function HeaderContent() {
   const [dashboard, setDashboard] = useState<DashboardDTO>();
+  const [error, setError] = useState('');
 
   useEffect(() => {
     async function loadDashboard() {
       try {
         const response = await findDashboard();
         setDashboard(response.data);
-      } catch (error) {
-        console.log(error);
+      } catch {
+        setError('Não foi possível carregar as tarefas.');
       }
     }
 
@@ -33,17 +34,25 @@ export default function HeaderContent() {
       })()
     : '';
 
+  if (error) {
+    return <p className="error-message">{error}</p>;
+  }
+
   return (
-    <>
-      <p>{dataFormatada}</p>
+    <div className="header-content">
+      <span className="header-date">{dataFormatada}</span>
 
-      <h1>{dashboard?.greeting} 👋</h1>
+      <h1 className="header-title">
+        {dashboard?.greeting} <span>👋</span>
+      </h1>
 
-      <p>
+      <p className="header-description">
         Você tem <strong>{dashboard?.pendingTasks}</strong> tarefas pendentes,
         sendo <strong>{dashboard?.highPriorityTasks}</strong> de alta
         prioridade.
       </p>
-    </>
+
+      {error && <p className="error-message">{error}</p>}
+    </div>
   );
 }
