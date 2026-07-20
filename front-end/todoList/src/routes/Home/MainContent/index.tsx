@@ -1,35 +1,36 @@
 import { useEffect, useState } from 'react';
-import { findAllTasks } from '../../../services/task-service';
-import type { TaskDTO } from '../../../models/task';
+
+import HeaderContent from '../../../components/HeaderContent';
+import DashboardCards from '../../../components/DashboardCards';
+
+import type { DashboardDTO } from '../../../models/dashboard';
+import { findDashboard } from '../../../services/dashboard-service';
 
 export default function MainContent() {
-  const [tasks, setTasks] = useState<TaskDTO[]>([]);
-  const [error, setError] = useState('');
+  const [dashboard, setDashboard] = useState<DashboardDTO>();
 
   useEffect(() => {
-    async function loadTasks() {
+    async function loadDashboard() {
       try {
-        const response = await findAllTasks();
-        setTasks(response.data);
-      } catch {
-        setError('Não foi possível carregar as tarefas.');
+        const response = await findDashboard();
+
+        setDashboard(response.data);
+      } catch (error) {
+        console.log(error);
       }
     }
 
-    loadTasks();
+    loadDashboard();
   }, []);
 
+  if (!dashboard) {
+    return <p className="error-message">Carregando... Espedando resposta do Backend.</p>;
+  }
+
   return (
-    <div>
-      {tasks.map((task) => (
-        <div key={task.id}>
-          <h2>{task.title}</h2>
-          <p>{task.description}</p>
-          <p>{task.category.name}</p>
-          <p>{task.priority}</p>
-        </div>
-      ))}
-      {error && <p>{error}</p>}
-    </div>
+    <>
+      <HeaderContent dashboard={dashboard} />
+      <DashboardCards dashboard={dashboard} />
+    </>
   );
 }

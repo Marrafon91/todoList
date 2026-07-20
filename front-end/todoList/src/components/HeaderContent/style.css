@@ -46,12 +46,6 @@
   font-weight: 700;
 }
 
-.error-message {
-  color: #dc2626;
-  font-size: 15px;
-  margin-top: 12px;
-}
-
 /* Responsividade */
 @media (max-width: 768px) {
   .header-title {

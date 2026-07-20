@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { ListTodo, Clock3, CircleCheck, AlertCircle } from 'lucide-react';
+import { ListTodo, Clock3, CircleCheck, AlertCircle, Inbox } from 'lucide-react';
 
 import './style.css';
 
@@ -42,7 +42,7 @@ export default function Sidebar() {
       {/* Resumo */}
       <div className="sidebar-menu">
         <SidebarItem
-          icon={<ListTodo size={18} />}
+          icon={<Inbox size={18} />}
           title="Todas"
           quantity={sidebar?.totalTasks ?? 0}
           active
