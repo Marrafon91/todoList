@@ -1,9 +1,13 @@
 import { Plus } from 'lucide-react';
 import './style.css';
 
-export default function AddTask() {
+type Props = {
+  onClick: () => void;
+};
+
+export default function AddTask({ onClick }: Props) {
   return (
-    <div className="add-task">
+    <div className="add-task" onClick={onClick}>
       <button className="add-task-button">
         <Plus size={22} />
       </button>

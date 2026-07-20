@@ -11,13 +11,14 @@ import type { TaskDTO } from '../../../models/task';
 
 import { findDashboard } from '../../../services/dashboard-service';
 import { findAllTasks } from '../../../services/task-service';
+import TaskModal from '../../../components/TaskModal';
 
 export default function MainContent() {
   const [dashboard, setDashboard] = useState<DashboardDTO>();
   const [tasks, setTasks] = useState<TaskDTO[]>([]);
   const [search, setSearch] = useState('');
+  const [openModal, setOpenModal] = useState(false);
 
-  // Carrega o Dashboard apenas uma vez
   useEffect(() => {
     async function loadDashboard() {
       try {
@@ -31,7 +32,6 @@ export default function MainContent() {
     loadDashboard();
   }, []);
 
-  // Carrega as tarefas sempre que a pesquisa mudar
   useEffect(() => {
     async function loadTasks() {
       try {
@@ -59,11 +59,12 @@ export default function MainContent() {
 
       <DashboardCards dashboard={dashboard} />
 
-      <AddTask />
+      <AddTask  onClick={() => setOpenModal(true)} />
 
       <SearchBar value={search} onChange={setSearch} />
 
       <TaskList tasks={tasks} />
+      <TaskModal open={openModal} onClose={() => setOpenModal(false)} />
     </>
   );
 }
