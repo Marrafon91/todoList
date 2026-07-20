@@ -9,6 +9,7 @@ import io.github.marrafon91.todoList.exceptions.DatabaseException;
 import io.github.marrafon91.todoList.exceptions.ResourceNotFoundException;
 import io.github.marrafon91.todoList.repositories.CategoryRepository;
 import io.github.marrafon91.todoList.repositories.TaskRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -56,12 +57,14 @@ public class TaskService {
 
     @Transactional
     public TaskDTO update(Long id, TaskUpdateDTO dto) {
-        Task task = taskRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Tarefa com ID " + id + " não encontrada"));
-
-        dtoToEntityUpdate(dto, task);
-        task = taskRepository.save(task);
-        return new TaskDTO(task);
+        try {
+            Task task = taskRepository.getReferenceById(id);
+            dtoToEntityUpdate(dto, task);
+            task = taskRepository.save(task);
+            return new TaskDTO(task);
+        } catch (EntityNotFoundException e) {
+            throw new ResourceNotFoundException("Tarefa com ID " + id + " não encontrada");
+        }
     }
 
     @Transactional
