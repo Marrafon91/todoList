@@ -5,6 +5,7 @@ import DashboardCards from '../../../components/DashboardCards';
 
 import type { DashboardDTO } from '../../../models/dashboard';
 import { findDashboard } from '../../../services/dashboard-service';
+import AddTask from '../../../components/AddTask';
 
 export default function MainContent() {
   const [dashboard, setDashboard] = useState<DashboardDTO>();
@@ -31,6 +32,7 @@ export default function MainContent() {
     <>
       <HeaderContent dashboard={dashboard} />
       <DashboardCards dashboard={dashboard} />
+      <AddTask />
     </>
   );
 }

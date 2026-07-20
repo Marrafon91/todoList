@@ -1,5 +1,4 @@
 import type { DashboardDTO } from '../../models/dashboard';
-
 import './style.css';
 
 type Props = {
