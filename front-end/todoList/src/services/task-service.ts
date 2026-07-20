@@ -1,8 +1,12 @@
 import { api } from '../utils/api';
-import type { TaskDTO, TaskInsertDTO, TaskUpdateDTO } from '../models/task'
+import type { TaskDTO, TaskInsertDTO, TaskUpdateDTO } from '../models/task';
 
-export function findAllTasks() {
-  return api.get<TaskDTO[]>('/api/tasks');
+export function findAllTasks(title?: string) {
+  return api.get<TaskDTO[]>('/api/tasks', {
+    params: {
+      title,
+    },
+  });
 }
 
 export function findTaskById(id: number) {

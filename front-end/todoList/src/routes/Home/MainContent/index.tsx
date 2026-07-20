@@ -2,42 +2,53 @@ import { useEffect, useState } from 'react';
 
 import HeaderContent from '../../../components/HeaderContent';
 import DashboardCards from '../../../components/DashboardCards';
+import AddTask from '../../../components/AddTask';
+import SearchBar from '../../../components/SearchBar';
+import TaskList from '../../../components/TaskList';
 
 import type { DashboardDTO } from '../../../models/dashboard';
 import type { TaskDTO } from '../../../models/task';
 
 import { findDashboard } from '../../../services/dashboard-service';
 import { findAllTasks } from '../../../services/task-service';
-import AddTask from '../../../components/AddTask';
-import SearchBar from '../../../components/SearchBar';
-import TaskList from '../../../components/TaskList';
 
 export default function MainContent() {
   const [dashboard, setDashboard] = useState<DashboardDTO>();
   const [tasks, setTasks] = useState<TaskDTO[]>([]);
+  const [search, setSearch] = useState('');
 
+  // Carrega o Dashboard apenas uma vez
   useEffect(() => {
-    async function loadData() {
+    async function loadDashboard() {
       try {
-        const [dashboardResponse, taskResponse] = await Promise.all([
-          findDashboard(),
-          findAllTasks(),
-        ]);
-
-        setDashboard(dashboardResponse.data);
-        setTasks(taskResponse.data);
+        const response = await findDashboard();
+        setDashboard(response.data);
       } catch (error) {
         console.log(error);
       }
     }
 
-    loadData();
+    loadDashboard();
   }, []);
+
+  // Carrega as tarefas sempre que a pesquisa mudar
+  useEffect(() => {
+    async function loadTasks() {
+      try {
+        const response = await findAllTasks(search);
+        setTasks(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    loadTasks();
+  }, [search]);
 
   if (!dashboard) {
     return (
       <p className="error-message">
-        Carregando... Espedando resposta do Backend.
+        Carregando... Esperando resposta do Backend.
       </p>
     );
   }
@@ -45,9 +56,13 @@ export default function MainContent() {
   return (
     <>
       <HeaderContent dashboard={dashboard} />
+
       <DashboardCards dashboard={dashboard} />
+
       <AddTask />
-      <SearchBar />
+
+      <SearchBar value={search} onChange={setSearch} />
+
       <TaskList tasks={tasks} />
     </>
   );
