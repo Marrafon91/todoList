@@ -1,14 +1,5 @@
 import './style.css';
-
-import {
-  Circle,
-  CheckCircle2,
-  Calendar,
-  Flag,
-  Pencil,
-  Trash2,
-} from 'lucide-react';
-
+import { Circle, CheckCircle2, Calendar, Flag, Pencil, Trash2} from 'lucide-react';
 import type { TaskDTO } from '../../models/task';
 
 type Props = {
@@ -18,12 +9,7 @@ type Props = {
   onDelete: (id: number) => void;
 };
 
-export default function TaskCard({
-  task,
-  onToggleDone,
-  onEdit,
-  onDelete,
-}: Props) {
+export default function TaskCard({ task, onToggleDone, onEdit, onDelete}: Props) {
   function priorityLabel() {
     switch (task.priority) {
       case 'HIGH':

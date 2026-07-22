@@ -10,12 +10,7 @@ type Props = {
   onDelete: (id: number) => void;
 };
 
-export default function TaskList({
-  tasks,
-  onToggleDone,
-  onEdit,
-  onDelete,
-}: Props) {
+export default function TaskList({ tasks, onToggleDone, onEdit, onDelete}: Props) {
   if (tasks.length === 0) {
     return (
       <div className="task-list-empty">

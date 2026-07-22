@@ -1,33 +1,27 @@
-import { useEffect, useState } from 'react';
-import { ListTodo, Clock3, CircleCheck, AlertCircle, Inbox } from 'lucide-react';
+import {
+  ListTodo,
+  Clock3,
+  CircleCheck,
+  AlertCircle,
+  Inbox,
+} from 'lucide-react';
 
 import './style.css';
 
-import type { SidebarDTO } from '../../models/sidebar';
-import { findSidebar } from '../../services/sidebar-service';
+import { useDashboard } from '../../context/DashboardContext';
 
 import SidebarItem from '../SidebarItem';
 import CategoryItem from '../CategoryItem';
 
 export default function Sidebar() {
-  const [sidebar, setSidebar] = useState<SidebarDTO>();
+  const { sidebar } = useDashboard();
 
-  useEffect(() => {
-    async function loadSidebar() {
-      try {
-        const response = await findSidebar();
-        setSidebar(response.data);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-
-    loadSidebar();
-  }, []);
+  if (!sidebar) {
+    return null;
+  }
 
   return (
     <aside className="sidebar">
-      {/* Cabeçalho */}
       <div className="sidebar-header">
         <div className="sidebar-logo">
           <ListTodo size={24} />
@@ -39,28 +33,27 @@ export default function Sidebar() {
         </div>
       </div>
 
-      {/* Resumo */}
       <div className="sidebar-menu">
         <SidebarItem
           icon={<Inbox size={18} />}
           title="Todas"
-          quantity={sidebar?.totalTasks ?? 0}
+          quantity={sidebar.totalTasks}
           active
         />
 
         <SidebarItem
           icon={<Clock3 size={18} />}
           title="Pendentes"
-          quantity={sidebar?.pendingTasks ?? 0}
+          quantity={sidebar.pendingTasks}
         />
 
         <SidebarItem
           icon={<CircleCheck size={18} />}
           title="Concluídas"
-          quantity={sidebar?.completedTasks ?? 0}
+          quantity={sidebar.completedTasks}
         />
 
-        {sidebar?.priorities.map((priority) => (
+        {sidebar.priorities.map((priority) => (
           <SidebarItem
             key={priority.priority}
             icon={<AlertCircle size={18} />}
@@ -70,11 +63,10 @@ export default function Sidebar() {
         ))}
       </div>
 
-      {/* Categorias */}
       <h3 className="sidebar-category-title">CATEGORIAS</h3>
 
       <div className="sidebar-categories">
-        {sidebar?.categories.map((category) => (
+        {sidebar.categories.map((category) => (
           <CategoryItem
             key={category.id}
             title={category.name}

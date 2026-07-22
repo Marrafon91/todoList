@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import HeaderContent from '../../../components/HeaderContent';
 import DashboardCards from '../../../components/DashboardCards';
@@ -7,95 +7,56 @@ import SearchBar from '../../../components/SearchBar';
 import TaskList from '../../../components/TaskList';
 import TaskModal from '../../../components/TaskModal';
 
-import type { DashboardDTO } from '../../../models/dashboard';
+import { useDashboard } from '../../../context/DashboardContext';
 import type { TaskDTO } from '../../../models/task';
 
-import { findDashboard } from '../../../services/dashboard-service';
-import { findAllTasks } from '../../../services/task-service';
-
 export default function MainContent() {
-  const [dashboard, setDashboard] = useState<DashboardDTO>();
-  const [tasks, setTasks] = useState<TaskDTO[]>([]);
-  const [search, setSearch] = useState('');
+  const {
+    dashboard,
+    tasks,
+    search,
+    setSearch,
+    toggleTaskDone,
+    deleteTask,
+    updateTask,
+    addTask,
+  } = useDashboard();
+
   const [openModal, setOpenModal] = useState(false);
+  const [editingTask, setEditingTask] = useState<TaskDTO | null>(null);
 
-  const loadDashboard = useCallback(async () => {
-    try {
-      const response = await findDashboard();
+  function handleNewTask() {
+    setEditingTask(null);
+    setOpenModal(true);
+  }
 
-      setDashboard(response.data);
-    } catch (error) {
-      console.log(error);
-    }
-  }, []);
-
-  const loadTasks = useCallback(async () => {
-    try {
-      const response = await findAllTasks(search);
-      setTasks(response.data);
-    } catch (error) {
-      console.log(error);
-    }
-  }, [search]);
-
-  useEffect(() => {
-    loadDashboard();
-  }, [loadDashboard]);
-
-  useEffect(() => {
-    loadTasks();
-  }, [loadTasks]);
-
-  function handleTaskCreated(task: TaskDTO) {
-    setTasks((previous) => [task, ...previous]);
-
-    loadDashboard();
+  function handleEditTask(task: TaskDTO) {
+    setEditingTask(task);
+    setOpenModal(true);
   }
 
   if (!dashboard) {
     return <p>Carregando...</p>;
   }
 
-  async function handleToggleDone(task: TaskDTO) {
-    try {
-      const response = await toggleDone(task.id);
-
-      setTasks((previous) =>
-        previous.map((item) => (item.id === task.id ? response.data : item)),
-      );
-
-      loadDashboard();
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  function handleEditTask(task: TaskDTO) {
-    console.log('Editar:', task);
-  }
-
-  function handleDeleteTask(id: number) {
-    console.log('Excluir:', id);
-  }
-
   return (
     <>
       <HeaderContent dashboard={dashboard} />
       <DashboardCards dashboard={dashboard} />
-      <AddTask onClick={() => setOpenModal(true)} />
+      <AddTask onClick={handleNewTask} />
       <SearchBar value={search} onChange={setSearch} />
 
       <TaskList
         tasks={tasks}
-        onToggleDone={handleToggleDone}
+        onToggleDone={toggleTaskDone}
         onEdit={handleEditTask}
-        onDelete={handleDeleteTask}
+        onDelete={deleteTask}
       />
 
       <TaskModal
         open={openModal}
         onClose={() => setOpenModal(false)}
-        onSaved={handleTaskCreated}
+        onSaved={() => setOpenModal(false)}
       />
     </>
   );
