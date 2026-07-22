@@ -16,16 +16,13 @@ export default function SidebarItem({
   onClick,
 }: Props) {
   return (
-    <button
-      className={`sidebar-item ${active ? 'active' : ''}`}
-      onClick={onClick}
-    >
-      <div className="sidebar-item-left">
+    <div className={`sidebar-item ${active ? 'active' : ''}`} onClick={onClick}>
+      <div className="sidebar-left">
         {icon}
         <span>{title}</span>
       </div>
 
-      <span className="sidebar-item-count">{quantity}</span>
-    </button>
+      <span className="sidebar-count">{quantity}</span>
+    </div>
   );
 }

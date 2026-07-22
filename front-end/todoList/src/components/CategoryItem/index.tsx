@@ -16,7 +16,7 @@ export default function CategoryItem({
   onClick,
 }: Props) {
   return (
-    <button
+    <div
       className={`category-item ${active ? 'active' : ''}`}
       onClick={onClick}
     >
@@ -26,7 +26,7 @@ export default function CategoryItem({
         <span>{title}</span>
       </div>
 
-      <span>{quantity}</span>
-    </button>
+      <span className="category-quantity">{quantity}</span>
+    </div>
   );
 }
