@@ -32,6 +32,12 @@ public class TaskController {
         return ResponseEntity.ok().body(dto);
     }
 
+    @PatchMapping("/{id}/done")
+    public ResponseEntity<TaskDTO> toggleDone(@PathVariable Long id) {
+        TaskDTO dto = taskService.toggleDone(id);
+        return ResponseEntity.ok(dto);
+    }
+
     @PostMapping
     public ResponseEntity<TaskDTO> insert(@Valid @RequestBody TaskInsertDTO dto) {
         TaskDTO result = taskService.insert(dto);

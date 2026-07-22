@@ -79,6 +79,19 @@ public class TaskService {
         }
     }
 
+    @Transactional
+    public TaskDTO toggleDone(Long id) {
+        try {
+            Task task = taskRepository.getReferenceById(id);
+            task.setDone(!task.isDone());
+            return new TaskDTO(task);
+        }
+        catch (EntityNotFoundException e) {
+            throw new ResourceNotFoundException(
+                    "Tarefa com ID " + id + " não encontrada");
+        }
+    }
+
     private Category getCategory(Long id) {
         return categoryRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Categoria com ID " + id + " não encontrada"));

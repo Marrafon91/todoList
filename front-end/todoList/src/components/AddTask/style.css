@@ -1,21 +1,45 @@
 .add-task {
   display: flex;
-  justify-content: flex-start;
-  gap: 12px;
+
   align-items: center;
-  padding: 16px;
-  margin: 24px 0;
-  background: #fff;
-  border: 1px solid #e5e7eb;
-  border-radius: 18px;
+
+  gap: 12px;
+
+  cursor: pointer;
+
+  margin: 20px 0;
+
+  color: #2563eb;
+
+  font-weight: 600;
 }
 
 .add-task-button {
-  width: 44px;
-  height: 44px;
-  border: none;
+  width: 45px;
+
+  height: 45px;
+
   border-radius: 50%;
+
+  border: none;
+
+  background: #2563eb;
+
+  color: white;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
   cursor: pointer;
-  color: #fff;
-  background: #3b82f6;
+}
+
+.add-task-button:hover {
+  background: #1d4ed8;
+}
+
+.add-task span {
+  font-size: 16px;
 }

@@ -13,6 +13,10 @@ export function findTaskById(id: number) {
   return api.get<TaskDTO>(`/api/tasks/${id}`);
 }
 
+export function toggleDone(id: number) {
+  return api.patch<TaskDTO>(`/api/tasks/${id}/done`);
+}
+
 export function insertTask(body: TaskInsertDTO) {
   return api.post<TaskDTO>('/api/tasks', body);
 }
