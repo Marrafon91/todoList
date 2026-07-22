@@ -1,38 +1,23 @@
 .add-task {
   display: flex;
-
   align-items: center;
-
   gap: 12px;
-
   cursor: pointer;
-
   margin: 20px 0;
-
   color: #2563eb;
-
   font-weight: 600;
 }
 
 .add-task-button {
   width: 45px;
-
   height: 45px;
-
   border-radius: 50%;
-
   border: none;
-
   background: #2563eb;
-
   color: white;
-
   display: flex;
-
   align-items: center;
-
   justify-content: center;
-
   cursor: pointer;
 }
 

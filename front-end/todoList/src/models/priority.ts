@@ -1,5 +1,7 @@
+export type Priority = 'LOW' | 'MEDIUM' | 'HIGH';
+
 export type PrioritySummaryDTO = {
-  priority: string;
+  priority: Priority;
   label: string;
   quantity: number;
-}
+};

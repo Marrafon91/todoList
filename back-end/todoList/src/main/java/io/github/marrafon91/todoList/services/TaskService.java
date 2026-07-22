@@ -4,16 +4,20 @@ import io.github.marrafon91.todoList.dtos.TaskDTO;
 import io.github.marrafon91.todoList.dtos.TaskInsertDTO;
 import io.github.marrafon91.todoList.dtos.TaskUpdateDTO;
 import io.github.marrafon91.todoList.entities.Category;
+import io.github.marrafon91.todoList.entities.Priority;
 import io.github.marrafon91.todoList.entities.Task;
 import io.github.marrafon91.todoList.exceptions.DatabaseException;
 import io.github.marrafon91.todoList.exceptions.ResourceNotFoundException;
 import io.github.marrafon91.todoList.repositories.CategoryRepository;
 import io.github.marrafon91.todoList.repositories.TaskRepository;
+import io.github.marrafon91.todoList.specifications.TaskSpecification;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 
 import java.util.List;
 
@@ -27,15 +31,23 @@ public class TaskService {
     private CategoryRepository categoryRepository;
 
     @Transactional(readOnly = true)
-    public List<TaskDTO> findAll(String title) {
-        List<Task> tasks;
+    public List<TaskDTO> findAll(
+            String title,
+            Boolean done,
+            Priority priority,
+            Long categoryId
+    ) {
+        Specification<Task> specification =
+                Specification.where(TaskSpecification.titleContains(title))
+                        .and(TaskSpecification.done(done))
+                        .and(TaskSpecification.priority(priority))
+                        .and(TaskSpecification.category(categoryId));
 
-        if (title == null || title.isBlank()) {
-            tasks = taskRepository.findAll();
-        } else {
-            tasks = taskRepository.findByTitleContainingIgnoreCase(title);
-        }
-        return tasks.stream().map(TaskDTO::new).toList();
+        List<Task> tasks = taskRepository.findAll(specification);
+
+        return tasks.stream()
+                .map(TaskDTO::new)
+                .toList();
     }
 
     @Transactional(readOnly = true)
@@ -85,8 +97,7 @@ public class TaskService {
             Task task = taskRepository.getReferenceById(id);
             task.setDone(!task.isDone());
             return new TaskDTO(task);
-        }
-        catch (EntityNotFoundException e) {
+        } catch (EntityNotFoundException e) {
             throw new ResourceNotFoundException(
                     "Tarefa com ID " + id + " não encontrada");
         }

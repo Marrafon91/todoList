@@ -36,7 +36,7 @@ export default function MainContent() {
   }
 
   if (!dashboard) {
-    return <p>Carregando...</p>;
+    return <p>Carregando... Esperando a Resposta do Backend</p>;
   }
 
   return (

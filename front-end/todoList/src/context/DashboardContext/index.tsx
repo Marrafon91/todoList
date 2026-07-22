@@ -10,7 +10,12 @@ import type { ReactNode } from 'react';
 
 import type { DashboardDTO } from '../../models/dashboard';
 import type { SidebarDTO } from '../../models/sidebar';
-import type { TaskDTO, TaskInsertDTO, TaskUpdateDTO } from '../../models/task';
+import type {
+  TaskDTO,
+  TaskFilterDTO,
+  TaskInsertDTO,
+  TaskUpdateDTO,
+} from '../../models/task';
 
 import { findDashboard } from '../../services/dashboard-service';
 import { findSidebar } from '../../services/sidebar-service';
@@ -27,8 +32,8 @@ type DashboardContextData = {
   dashboard?: DashboardDTO;
   sidebar?: SidebarDTO;
   tasks: TaskDTO[];
-  search: string;
-  setSearch: (value: string) => void;
+  filters: TaskFilterDTO;
+  setFilters: React.Dispatch<React.SetStateAction<TaskFilterDTO>>;
   loading: boolean;
   refreshAll: () => Promise<void>;
   addTask: (dto: TaskInsertDTO) => Promise<void>;
@@ -47,8 +52,14 @@ export function DashboardProvider({ children }: Props) {
   const [dashboard, setDashboard] = useState<DashboardDTO>();
   const [sidebar, setSidebar] = useState<SidebarDTO>();
   const [tasks, setTasks] = useState<TaskDTO[]>([]);
-  const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(true);
+  
+  const [filters, setFilters] = useState<TaskFilterDTO>({
+    title: '',
+    done: undefined,
+    priority: undefined,
+    categoryId: undefined,
+  });
 
   const refreshAll = useCallback(async () => {
     try {
@@ -58,19 +69,16 @@ export function DashboardProvider({ children }: Props) {
         await Promise.all([
           findDashboard(),
           findSidebar(),
-          findAllTasks(search),
+          findAllTasks(filters),
         ]);
 
       setDashboard(dashboardResponse.data);
       setSidebar(sidebarResponse.data);
-
       setTasks(tasksResponse.data);
-    } catch (error) {
-      console.log(error);
     } finally {
       setLoading(false);
     }
-  }, [search]);
+  }, [filters]);
 
   useEffect(() => {
     refreshAll();
@@ -78,30 +86,20 @@ export function DashboardProvider({ children }: Props) {
 
   async function addTask(dto: TaskInsertDTO) {
     try {
-      const response = await insertTask(dto);
-
-      setTasks((previous) => [response.data, ...previous]);
-
-      await Promise.all([refreshAll()]);
+      await insertTask(dto);
+      await refreshAll();
     } catch (error) {
       console.log(error);
-
       throw error;
     }
   }
 
   async function updateTask(id: number, dto: TaskUpdateDTO) {
     try {
-      const response = await updateTaskService(id, dto);
-
-      setTasks((previous) =>
-        previous.map((task) => (task.id === id ? response.data : task)),
-      );
-
-      await Promise.all([refreshAll()]);
+      await updateTaskService(id, dto);
+      await refreshAll();
     } catch (error) {
       console.log(error);
-
       throw error;
     }
   }
@@ -109,29 +107,19 @@ export function DashboardProvider({ children }: Props) {
   async function deleteTask(id: number) {
     try {
       await deleteTaskService(id);
-
-      setTasks((previous) => previous.filter((task) => task.id !== id));
-
-      await Promise.all([refreshAll()]);
+      await refreshAll();
     } catch (error) {
       console.log(error);
-
       throw error;
     }
   }
 
   async function toggleTaskDone(task: TaskDTO) {
     try {
-      const response = await toggleDone(task.id);
-
-      setTasks((previous) =>
-        previous.map((item) => (item.id === task.id ? response.data : item)),
-      );
-
-      await Promise.all([refreshAll()]);
+      await toggleDone(task.id);
+      await refreshAll();
     } catch (error) {
       console.log(error);
-
       throw error;
     }
   }
@@ -142,8 +130,8 @@ export function DashboardProvider({ children }: Props) {
         dashboard,
         sidebar,
         tasks,
-        search,
-        setSearch,
+        filters,
+        setFilters,
         loading,
         refreshAll,
         addTask,
@@ -157,6 +145,7 @@ export function DashboardProvider({ children }: Props) {
   );
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useDashboard() {
   return useContext(DashboardContext);
 }

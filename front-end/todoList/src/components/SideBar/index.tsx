@@ -14,7 +14,7 @@ import SidebarItem from '../SidebarItem';
 import CategoryItem from '../CategoryItem';
 
 export default function Sidebar() {
-  const { sidebar } = useDashboard();
+  const { sidebar, filters, setFilters } = useDashboard();
 
   if (!sidebar) {
     return null;
@@ -38,19 +38,49 @@ export default function Sidebar() {
           icon={<Inbox size={18} />}
           title="Todas"
           quantity={sidebar.totalTasks}
-          active
+          active={
+            filters.done === undefined &&
+            filters.priority === undefined &&
+            filters.categoryId === undefined
+          }
+          onClick={() =>
+            setFilters({
+              ...filters,
+              done: undefined,
+              priority: undefined,
+              categoryId: undefined,
+            })
+          }
         />
 
         <SidebarItem
           icon={<Clock3 size={18} />}
           title="Pendentes"
           quantity={sidebar.pendingTasks}
+          active={filters.done === false}
+          onClick={() =>
+            setFilters({
+              ...filters,
+              done: false,
+              priority: undefined,
+              categoryId: undefined,
+            })
+          }
         />
 
         <SidebarItem
           icon={<CircleCheck size={18} />}
           title="Concluídas"
           quantity={sidebar.completedTasks}
+          active={filters.done === true}
+          onClick={() =>
+            setFilters({
+              ...filters,
+              done: true,
+              priority: undefined,
+              categoryId: undefined,
+            })
+          }
         />
 
         {sidebar.priorities.map((priority) => (
@@ -59,6 +89,15 @@ export default function Sidebar() {
             icon={<AlertCircle size={18} />}
             title={priority.label}
             quantity={priority.quantity}
+            active={filters.priority === priority.priority}
+            onClick={() =>
+              setFilters({
+                ...filters,
+                priority: priority.priority,
+                done: undefined,
+                categoryId: undefined,
+              })
+            }
           />
         ))}
       </div>
@@ -72,6 +111,15 @@ export default function Sidebar() {
             title={category.name}
             color={category.color}
             quantity={category.quantity}
+            active={filters.categoryId === category.id}
+            onClick={() =>
+              setFilters({
+                ...filters,
+                categoryId: category.id,
+                done: undefined,
+                priority: undefined,
+              })
+            }
           />
         ))}
       </div>

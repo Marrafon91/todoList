@@ -5,17 +5,27 @@ type Props = {
   title: string;
   quantity: number;
   active?: boolean;
+  onClick?: () => void;
 };
 
-export default function SidebarItem({ icon, title, quantity, active }: Props) {
+export default function SidebarItem({
+  icon,
+  title,
+  quantity,
+  active = false,
+  onClick,
+}: Props) {
   return (
-    <div className={`sidebar-item ${active ? 'active' : ''}`}>
-      <div className="sidebar-left">
+    <button
+      className={`sidebar-item ${active ? 'active' : ''}`}
+      onClick={onClick}
+    >
+      <div className="sidebar-item-left">
         {icon}
         <span>{title}</span>
       </div>
 
-      <span>{quantity}</span>
-    </div>
+      <span className="sidebar-item-count">{quantity}</span>
+    </button>
   );
 }

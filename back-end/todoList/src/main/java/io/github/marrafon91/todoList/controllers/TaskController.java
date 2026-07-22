@@ -3,6 +3,7 @@ package io.github.marrafon91.todoList.controllers;
 import io.github.marrafon91.todoList.dtos.TaskDTO;
 import io.github.marrafon91.todoList.dtos.TaskInsertDTO;
 import io.github.marrafon91.todoList.dtos.TaskUpdateDTO;
+import io.github.marrafon91.todoList.entities.Priority;
 import io.github.marrafon91.todoList.services.TaskService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +23,19 @@ public class TaskController {
 
     @GetMapping
     public ResponseEntity<List<TaskDTO>> findAll(
-            @RequestParam(required = false) String title) {
-        return ResponseEntity.ok(taskService.findAll(title));
+            @RequestParam(required = false) String title,
+            @RequestParam(required = false) Boolean done,
+            @RequestParam(required = false) Priority priority,
+            @RequestParam(required = false) Long categoryId
+    ) {
+        return ResponseEntity.ok(
+                taskService.findAll(
+                        title,
+                        done,
+                        priority,
+                        categoryId
+                )
+        );
     }
 
     @GetMapping(value = "/{id}")
