@@ -14,8 +14,8 @@ export default function MainContent() {
   const {
     dashboard,
     tasks,
-    search,
-    setSearch,
+    filters,
+    setFilters,
     toggleTaskDone,
     deleteTask,
     updateTask,
@@ -44,7 +44,16 @@ export default function MainContent() {
       <HeaderContent dashboard={dashboard} />
       <DashboardCards dashboard={dashboard} />
       <AddTask onClick={handleNewTask} />
-      <SearchBar value={search} onChange={setSearch} />
+      
+      <SearchBar
+        value={filters.title ?? ''}
+        onChange={(value) =>
+          setFilters((previous) => ({
+            ...previous,
+            title: value,
+          }))
+        }
+      />
 
       <TaskList
         tasks={tasks}
