@@ -1,4 +1,4 @@
-import type { CategoryDTO } from "./category";
+import type { CategoryDTO } from './category';
 
 export type Priority = 'LOW' | 'MEDIUM' | 'HIGH';
 
@@ -19,6 +19,13 @@ export type TaskInsertDTO = {
   priority: Priority;
   categoryId: number;
   dueDate: string;
+};
+
+export type TaskFilterDTO = {
+  title?: string;
+  done?: boolean;
+  priority?: string;
+  categoryId?: number;
 };
 
 export type TaskUpdateDTO = TaskInsertDTO;

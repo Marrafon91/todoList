@@ -41,7 +41,6 @@ export default function MainContent() {
   }
 
   function handleDeleteRequest(id: number) {
-    console.log('Clique para excluir:', id);
     setTaskSelected(id);
     setOpenConfirmModal(true);
   }
