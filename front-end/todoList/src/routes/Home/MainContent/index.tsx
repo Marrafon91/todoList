@@ -9,21 +9,17 @@ import TaskModal from '../../../components/TaskModal';
 
 import { useDashboard } from '../../../context/DashboardContext';
 import type { TaskDTO } from '../../../models/task';
+import ConfirmModal from '../../../components/ConfirmModal';
 
 export default function MainContent() {
-  const {
-    dashboard,
-    tasks,
-    filters,
-    setFilters,
-    toggleTaskDone,
-    deleteTask,
-    updateTask,
-    addTask,
-  } = useDashboard();
+  const { dashboard, tasks, filters, setFilters, toggleTaskDone, deleteTask } =
+    useDashboard();
 
   const [openModal, setOpenModal] = useState(false);
+  const [openConfirmModal, setOpenConfirmModal] = useState(false);
+
   const [editingTask, setEditingTask] = useState<TaskDTO | null>(null);
+  const [taskSelected, setTaskSelected] = useState<number | null>(null);
 
   function handleNewTask() {
     setEditingTask(null);
@@ -33,6 +29,21 @@ export default function MainContent() {
   function handleEditTask(task: TaskDTO) {
     setEditingTask(task);
     setOpenModal(true);
+  }
+
+  function handleDeleteRequest(id: number) {
+    console.log("Clique para excluir:", id);
+    setTaskSelected(id);
+    setOpenConfirmModal(true);
+  }
+
+  async function handleConfirmDelete() {
+    if (taskSelected !== null) {
+      await deleteTask(taskSelected);
+
+      setOpenConfirmModal(false);
+      setTaskSelected(null);
+    }
   }
 
   if (!dashboard) {
@@ -48,7 +59,7 @@ export default function MainContent() {
       <SearchBar
         value={filters.title ?? ''}
         onChange={(value) =>
-          setFilters((previous) => ({
+          setFilters((previous: any) => ({
             ...previous,
             title: value,
           }))
@@ -59,7 +70,7 @@ export default function MainContent() {
         tasks={tasks}
         onToggleDone={toggleTaskDone}
         onEdit={handleEditTask}
-        onDelete={deleteTask}
+        onDelete={handleDeleteRequest}
       />
 
       <TaskModal
@@ -68,6 +79,16 @@ export default function MainContent() {
         onClose={() => {
           setOpenModal(false);
           setEditingTask(null);
+        }}
+      />
+
+      <ConfirmModal
+        open={openConfirmModal}
+        message="Deseja realmente excluir esta tarefa?"
+        onConfirm={handleConfirmDelete}
+        onCancel={() => {
+          setOpenConfirmModal(false);
+          setTaskSelected(null);
         }}
       />
     </>
