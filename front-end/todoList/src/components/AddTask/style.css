@@ -1,10 +1,11 @@
 .add-task {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 12px;
   margin: 20px 0;
   color: #2563eb;
   font-weight: 600;
+  cursor: pointer;
 }
 
 .add-task-button {

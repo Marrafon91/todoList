@@ -1,6 +1,5 @@
-import type { CategorySummaryDTO } from "./category";
-import type { PrioritySummaryDTO } from "./priority";
-
+import type { CategorySummaryDTO } from './category';
+import type { PrioritySummaryDTO } from './priority';
 
 export type SidebarDTO = {
   totalTasks: number;
@@ -9,4 +8,4 @@ export type SidebarDTO = {
 
   priorities: PrioritySummaryDTO[];
   categories: CategorySummaryDTO[];
-}
+};
