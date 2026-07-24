@@ -1,4 +1,6 @@
-import type { CategoryDTO } from './category';
+import type { CategoryDTO } from "./category";
+
+export type Priority = 'LOW' | 'MEDIUM' | 'HIGH';
 
 export type TaskDTO = {
   id: number;
@@ -7,28 +9,16 @@ export type TaskDTO = {
   done: boolean;
   createdAt: string;
   dueDate: string;
-  priority: string;
+  priority: Priority;
   category: CategoryDTO;
 };
+
 export type TaskInsertDTO = {
   title: string;
   description: string;
-  priority: string;
+  priority: Priority;
   categoryId: number;
   dueDate: string;
 };
 
-export type TaskUpdateDTO = {
-  title: string;
-  description: string;
-  priority: string;
-  categoryId: number;
-  dueDate: string;
-};
-
-export type TaskFilterDTO = {
-  title?: string;
-  done?: boolean;
-  priority?: 'LOW' | 'MEDIUM' | 'HIGH';
-  categoryId?: number;
-};
+export type TaskUpdateDTO = TaskInsertDTO;

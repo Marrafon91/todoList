@@ -44,7 +44,7 @@ export default function MainContent() {
       <HeaderContent dashboard={dashboard} />
       <DashboardCards dashboard={dashboard} />
       <AddTask onClick={handleNewTask} />
-      
+
       <SearchBar
         value={filters.title ?? ''}
         onChange={(value) =>
@@ -64,8 +64,11 @@ export default function MainContent() {
 
       <TaskModal
         open={openModal}
-        onClose={() => setOpenModal(false)}
-        onSaved={() => setOpenModal(false)}
+        taskToEdit={editingTask}
+        onClose={() => {
+          setOpenModal(false);
+          setEditingTask(null);
+        }}
       />
     </>
   );

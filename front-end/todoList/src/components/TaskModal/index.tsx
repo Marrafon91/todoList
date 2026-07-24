@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import './style.css';
 
 import type { CategoryDTO } from '../../models/category';
-import type { TaskDTO, TaskInsertDTO } from '../../models/task';
+import type { TaskDTO, TaskInsertDTO, TaskUpdateDTO } from '../../models/task';
 
 import { findAllCategories } from '../../services/category-service';
 import { useDashboard } from '../../context/DashboardContext';
@@ -10,14 +10,15 @@ import { useDashboard } from '../../context/DashboardContext';
 type Props = {
   open: boolean;
   onClose: () => void;
-  onSaved: (task: TaskDTO) => void;
+  taskToEdit: TaskDTO | null;
 };
 
-export default function TaskModal({ open, onClose }: Props) {
+export default function TaskModal({ open, onClose, taskToEdit }: Props) {
   const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useState<CategoryDTO[]>([]);
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const { addTask } = useDashboard();
+
+  const { addTask, updateTask } = useDashboard();
 
   const [task, setTask] = useState<TaskInsertDTO>({
     title: '',
@@ -27,12 +28,6 @@ export default function TaskModal({ open, onClose }: Props) {
     dueDate: '',
   });
 
-  useEffect(() => {
-    if (open) {
-      loadCategories();
-    }
-  }, [open]);
-
   async function loadCategories() {
     try {
       const response = await findAllCategories();
@@ -41,6 +36,24 @@ export default function TaskModal({ open, onClose }: Props) {
       console.log(error);
     }
   }
+
+  useEffect(() => {
+    if (!open) return;
+
+    loadCategories();
+
+    if (taskToEdit) {
+      setTask({
+        title: taskToEdit.title,
+        description: taskToEdit.description,
+        priority: taskToEdit.priority,
+        categoryId: taskToEdit.category.id,
+        dueDate: taskToEdit.dueDate,
+      });
+    } else {
+      clearForm();
+    }
+  }, [open, taskToEdit]);
 
   function handleChange(
     event: React.ChangeEvent<
@@ -76,11 +89,22 @@ export default function TaskModal({ open, onClose }: Props) {
 
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
+
     setLoading(true);
     setErrors({});
 
     try {
-      await addTask(task);
+      if (taskToEdit) {
+        const dto: TaskUpdateDTO = {
+          ...task,
+          done: taskToEdit.done,
+        };
+
+        await updateTask(taskToEdit.id, dto);
+      } else {
+        await addTask(task);
+      }
+
       clearForm();
       onClose();
     } catch (error: any) {
@@ -102,7 +126,6 @@ export default function TaskModal({ open, onClose }: Props) {
 
   function handleCancel() {
     clearForm();
-    setErrors({});
     onClose();
   }
 
@@ -111,11 +134,15 @@ export default function TaskModal({ open, onClose }: Props) {
   }
 
   return (
-    <div className="task-modal-overlay" onClick={onClose}>
+    <div className="task-modal-overlay" onClick={handleCancel}>
       <div className="task-modal" onClick={(event) => event.stopPropagation()}>
         <div className="modal-header">
-          <h2>Nova tarefa</h2>
-          <p>Preencha os dados abaixo.</p>
+          <h2>{taskToEdit ? 'Editar tarefa' : 'Nova tarefa'}</h2>
+          <p>
+            {taskToEdit
+              ? 'Atualize as informações da tarefa.'
+              : 'Preencha os dados abaixo.'}
+          </p>
         </div>
 
         <form onSubmit={handleSubmit}>
@@ -220,7 +247,7 @@ export default function TaskModal({ open, onClose }: Props) {
             </button>
 
             <button type="submit" className="btn-save" disabled={loading}>
-              {loading ? 'Salvando...' : 'Salvar'}
+              {loading ? 'Salvando...' : taskToEdit ? 'Atualizar' : 'Salvar'}
             </button>
           </div>
         </form>

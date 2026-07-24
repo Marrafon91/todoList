@@ -112,8 +112,19 @@ export function DashboardProvider({ children }: Props) {
 
   async function updateTask(id: number, dto: TaskUpdateDTO) {
     try {
-      await updateTaskService(id, dto);
-      await refreshAll();
+      const response = await updateTaskService(id, dto);
+
+      setTasks((previous) =>
+        previous.map((task) => (task.id === id ? response.data : task)),
+      );
+
+      const [dashboardResponse, sidebarResponse] = await Promise.all([
+        findDashboard(),
+        findSidebar(),
+      ]);
+
+      setDashboard(dashboardResponse.data);
+      setSidebar(sidebarResponse.data);
     } catch (error) {
       console.log(error);
       throw error;
@@ -123,17 +134,36 @@ export function DashboardProvider({ children }: Props) {
   async function deleteTask(id: number) {
     try {
       await deleteTaskService(id);
-      await refreshAll();
+
+      setTasks((previous) => previous.filter((task) => task.id !== id));
+
+      const [dashboardResponse, sidebarResponse] = await Promise.all([
+        findDashboard(),
+        findSidebar(),
+      ]);
+
+      setDashboard(dashboardResponse.data);
+      setSidebar(sidebarResponse.data);
     } catch (error) {
       console.log(error);
       throw error;
     }
   }
-
   async function toggleTaskDone(task: TaskDTO) {
     try {
-      await toggleDone(task.id);
-      await refreshAll();
+      const response = await toggleDone(task.id);
+
+      setTasks((previous) =>
+        previous.map((item) => (item.id === task.id ? response.data : item)),
+      );
+
+      const [dashboardResponse, sidebarResponse] = await Promise.all([
+        findDashboard(),
+        findSidebar(),
+      ]);
+
+      setDashboard(dashboardResponse.data);
+      setSidebar(sidebarResponse.data);
     } catch (error) {
       console.log(error);
       throw error;
