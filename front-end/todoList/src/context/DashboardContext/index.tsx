@@ -27,6 +27,7 @@ import {
   deleteTask as deleteTaskService,
   toggleDone,
 } from '../../services/task-service';
+import { useDebounce } from '../../hooks/useDebounce';
 
 type DashboardContextData = {
   dashboard?: DashboardDTO;
@@ -53,7 +54,7 @@ export function DashboardProvider({ children }: Props) {
   const [sidebar, setSidebar] = useState<SidebarDTO>();
   const [tasks, setTasks] = useState<TaskDTO[]>([]);
   const [loading, setLoading] = useState(true);
-  
+
   const [filters, setFilters] = useState<TaskFilterDTO>({
     title: '',
     done: undefined,
@@ -61,15 +62,22 @@ export function DashboardProvider({ children }: Props) {
     categoryId: undefined,
   });
 
+  const debouncedTitle = useDebounce(filters.title, 500);
+
   const refreshAll = useCallback(async () => {
     try {
       setLoading(true);
+
+      const filtersRequest = {
+        ...filters,
+        title: debouncedTitle,
+      };
 
       const [dashboardResponse, sidebarResponse, tasksResponse] =
         await Promise.all([
           findDashboard(),
           findSidebar(),
-          findAllTasks(filters),
+          findAllTasks(filtersRequest),
         ]);
 
       setDashboard(dashboardResponse.data);
@@ -78,7 +86,7 @@ export function DashboardProvider({ children }: Props) {
     } finally {
       setLoading(false);
     }
-  }, [filters]);
+  }, [debouncedTitle, filters.done, filters.priority, filters.categoryId]);
 
   useEffect(() => {
     refreshAll();
