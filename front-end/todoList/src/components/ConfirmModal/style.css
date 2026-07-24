@@ -46,6 +46,11 @@
   margin-bottom: 20px;
 }
 
+.delete-all-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .delete-all-button:hover {
   background: #b91c1c;
 }

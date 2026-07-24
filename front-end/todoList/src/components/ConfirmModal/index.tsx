@@ -2,6 +2,7 @@ import './style.css';
 
 type Props = {
   open: boolean;
+  title?: string;
   message: string;
   onConfirm: () => void;
   onCancel: () => void;
@@ -9,6 +10,7 @@ type Props = {
 
 export default function ConfirmModal({
   open,
+  title,
   message,
   onConfirm,
   onCancel,
@@ -20,7 +22,7 @@ export default function ConfirmModal({
   return (
     <div className="modal-overlay" onClick={onCancel}>
       <div className="modal" onClick={(e) => e.stopPropagation()}>
-        <h2>Confirmar exclusão</h2>
+        <h2>{title ?? 'Confirmar exclusão'}</h2>
 
         <p>{message}</p>
 

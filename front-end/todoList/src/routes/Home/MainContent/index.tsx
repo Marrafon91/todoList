@@ -87,6 +87,7 @@ export default function MainContent() {
 
         <button
           className="delete-all-button"
+          disabled={tasks.length === 0}
           onClick={() => setOpenDeleteAllModal(true)}
         >
           <Trash2 size={22} />
@@ -111,6 +112,7 @@ export default function MainContent() {
 
       <ConfirmModal
         open={openDeleteAllModal}
+        title="Excluir todas as tarefas"
         message="Você tem certeza que deseja excluir todas as tarefas?"
         onConfirm={handleConfirmDeleteAll}
         onCancel={() => setOpenDeleteAllModal(false)}
@@ -118,6 +120,7 @@ export default function MainContent() {
 
       <ConfirmModal
         open={openConfirmModal}
+        title="Excluir tarefa"
         message="Deseja realmente excluir esta tarefa?"
         onConfirm={handleConfirmDelete}
         onCancel={() => {
