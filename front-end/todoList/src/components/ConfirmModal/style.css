@@ -31,6 +31,25 @@
   transition: 0.2s;
 }
 
+.delete-all-button {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  border: none;
+  background: #dc2626;
+  color: white;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: 0.2s;
+  margin-bottom: 20px;
+}
+
+.delete-all-button:hover {
+  background: #b91c1c;
+}
+
 .cancel-button {
   background: #64748b;
 }

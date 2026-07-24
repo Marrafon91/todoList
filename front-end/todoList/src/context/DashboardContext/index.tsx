@@ -25,8 +25,10 @@ import {
   insertTask,
   updateTask as updateTaskService,
   deleteTask as deleteTaskService,
+  deleteAllTasks as deleteAllTasksService,
   toggleDone,
 } from '../../services/task-service';
+
 import { useDebounce } from '../../hooks/useDebounce';
 
 type DashboardContextData = {
@@ -40,6 +42,7 @@ type DashboardContextData = {
   addTask: (dto: TaskInsertDTO) => Promise<void>;
   updateTask: (id: number, dto: TaskUpdateDTO) => Promise<void>;
   deleteTask: (id: number) => Promise<void>;
+  deleteAllTasks: () => Promise<void>;
   toggleTaskDone: (task: TaskDTO) => Promise<void>;
 };
 
@@ -149,6 +152,28 @@ export function DashboardProvider({ children }: Props) {
       throw error;
     }
   }
+
+  async function deleteAllTasks() {
+    try {
+      await deleteAllTasksService();
+      setTasks([]);
+
+      setDashboard(undefined);
+      setSidebar(undefined);
+
+      const [dashboardResponse, sidebarResponse] = await Promise.all([
+        findDashboard(),
+        findSidebar(),
+      ]);
+
+      setDashboard(dashboardResponse.data);
+      setSidebar(sidebarResponse.data);
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
   async function toggleTaskDone(task: TaskDTO) {
     try {
       const response = await toggleDone(task.id);
@@ -183,6 +208,7 @@ export function DashboardProvider({ children }: Props) {
         addTask,
         updateTask,
         deleteTask,
+        deleteAllTasks,
         toggleTaskDone,
       }}
     >

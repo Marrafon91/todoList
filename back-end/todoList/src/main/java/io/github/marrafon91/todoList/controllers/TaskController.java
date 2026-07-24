@@ -73,4 +73,10 @@ public class TaskController {
         taskService.delete(id);
         return ResponseEntity.noContent().build();
     }
+
+    @DeleteMapping("/delete-all")
+    public ResponseEntity<Void> deleteAll(){
+        taskService.deleteAll();
+        return ResponseEntity.noContent().build();
+    }
 }

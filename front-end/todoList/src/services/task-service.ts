@@ -31,3 +31,7 @@ export function updateTask(id: number, body: TaskUpdateDTO) {
 export function deleteTask(id: number) {
   return api.delete(`/api/tasks/${id}`);
 }
+
+export function deleteAllTasks(){
+  return api.delete("/api/tasks/delete-all");
+}

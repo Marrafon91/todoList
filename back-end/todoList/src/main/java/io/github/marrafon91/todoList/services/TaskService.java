@@ -92,6 +92,11 @@ public class TaskService {
     }
 
     @Transactional
+    public void deleteAll(){
+        taskRepository.deleteAll();
+    }
+
+    @Transactional
     public TaskDTO toggleDone(Long id) {
         try {
             Task task = taskRepository.getReferenceById(id);
