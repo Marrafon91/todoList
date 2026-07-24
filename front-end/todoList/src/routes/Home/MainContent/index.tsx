@@ -6,10 +6,10 @@ import AddTask from '../../../components/AddTask';
 import SearchBar from '../../../components/SearchBar';
 import TaskList from '../../../components/TaskList';
 import TaskModal from '../../../components/TaskModal';
+import ConfirmModal from '../../../components/ConfirmModal';
 
 import { useDashboard } from '../../../context/DashboardContext';
 import type { TaskDTO } from '../../../models/task';
-import ConfirmModal from '../../../components/ConfirmModal';
 
 export default function MainContent() {
   const { dashboard, tasks, filters, setFilters, toggleTaskDone, deleteTask } =

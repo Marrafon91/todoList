@@ -104,7 +104,6 @@ export default function TaskModal({ open, onClose, taskToEdit }: Props) {
       } else {
         await addTask(task);
       }
-
       clearForm();
       onClose();
     } catch (error: any) {

@@ -5,6 +5,7 @@ INSERT INTO tb_category (name, color) VALUES ('Trabalho', '#2563EB');
 INSERT INTO tb_category (name, color) VALUES ('Estudos', '#22C55E');
 INSERT INTO tb_category (name, color) VALUES ('Pessoal', '#F59E0B');
 INSERT INTO tb_category (name, color) VALUES ('Casa', '#EF4444');
+INSERT INTO tb_category (name, color) VALUES ('Diversos', '#651196');
 
 -- TRABALHO (3 tarefas) categoria_id = 1
 
