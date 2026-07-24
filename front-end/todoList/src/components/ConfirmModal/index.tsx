@@ -1,3 +1,5 @@
+import ButtonDanger from '../ButtonDanger';
+import ButtonSecondary from '../ButtonSecondary';
 import './style.css';
 
 type Props = {
@@ -27,13 +29,9 @@ export default function ConfirmModal({
         <p>{message}</p>
 
         <div>
-          <button className="cancel-button" onClick={onCancel}>
-            Cancelar
-          </button>
+          <ButtonSecondary text="Cancelar" onClick={onCancel} />
 
-          <button className="delete-confirm-button" onClick={onConfirm}>
-            Excluir
-          </button>
+          <ButtonDanger text="Excluir" onClick={onConfirm} />
         </div>
       </div>
     </div>

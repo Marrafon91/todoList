@@ -6,6 +6,8 @@ import type { TaskDTO, TaskInsertDTO, TaskUpdateDTO } from '../../models/task';
 
 import { findAllCategories } from '../../services/category-service';
 import { useDashboard } from '../../context/DashboardContext';
+import ButtonSecondary from '../ButtonSecondary';
+import ButtonPrimary from '../ButtonPrimary';
 
 type Props = {
   open: boolean;
@@ -241,13 +243,13 @@ export default function TaskModal({ open, onClose, taskToEdit }: Props) {
           </div>
 
           <div className="modal-buttons">
-            <button type="button" className="btn-cancel" onClick={handleCancel}>
-              Cancelar
-            </button>
+            <ButtonSecondary text="Cancelar" onClick={handleCancel} />
 
-            <button type="submit" className="btn-save" disabled={loading}>
-              {loading ? 'Salvando...' : taskToEdit ? 'Atualizar' : 'Salvar'}
-            </button>
+            <ButtonPrimary
+              text={loading ? 'Salvando...' : 'Salvar'}
+              type="submit"
+              disabled={loading}
+            />
           </div>
         </form>
       </div>
