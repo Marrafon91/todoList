@@ -123,3 +123,23 @@ INSERT INTO tb_task
 VALUES
     ('Correr no parque', 'Fazer corrida ao ar livre', true, CURRENT_TIMESTAMP, DATE '2026-07-29', 'LOW', 1, 4);
 
+INSERT INTO tb_task
+(title, description, done, created_at, due_date, priority, user_id, category_id)
+VALUES
+    ('Atividades Extras', 'Estudos por conta propria', true, CURRENT_TIMESTAMP, DATE '2026-10-31', 'LOW', 2, 5);
+
+INSERT INTO tb_task
+(title, description, done, created_at, due_date, priority, user_id, category_id)
+VALUES
+    ('Correr uma Maratona', 'Correr uma maratona de 42km ao ar livre', false, CURRENT_TIMESTAMP, DATE '2026-11-02', 'MEDIUM', 1, 5);
+
+INSERT INTO tb_task
+(title, description, done, created_at, due_date, priority, user_id, category_id)
+VALUES
+    ('Curso de Ingles', 'Melhorar meu nivel de ingles', false, CURRENT_TIMESTAMP, DATE '2026-12-31', 'HIGH', 2, 5);
+
+INSERT INTO tb_task
+(title, description, done, created_at, due_date, priority, user_id, category_id)
+VALUES
+    ('Assitir Resident Evil', 'Ir ao cinema assitir no lançamento', false, CURRENT_TIMESTAMP, DATE '2026-10-12', 'HIGH', 1, 5);
+

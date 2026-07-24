@@ -4,7 +4,6 @@
   align-items: center;
   gap: 12px;
   padding: 14px 16px;
-  margin-bottom: 24px;
   background: #fff;
   border: 1px solid #e5e7eb;
   border-radius: 14px;
@@ -21,6 +20,5 @@
   display: flex;
   align-items: center;
   gap: 12px;
+  margin-bottom: 24px;
 }
-
-

@@ -90,7 +90,7 @@ export default function MainContent() {
           disabled={tasks.length === 0}
           onClick={() => setOpenDeleteAllModal(true)}
         >
-          <Trash2 size={22} />
+          <Trash2 />
         </button>
       </div>
 
