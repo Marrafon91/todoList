@@ -5,7 +5,7 @@ import type { CategoryDTO } from '../../models/category';
 import type { TaskDTO, TaskInsertDTO } from '../../models/task';
 
 import { findAllCategories } from '../../services/category-service';
-import { insertTask } from '../../services/task-service';
+import { useDashboard } from '../../context/DashboardContext';
 
 type Props = {
   open: boolean;
@@ -13,10 +13,11 @@ type Props = {
   onSaved: (task: TaskDTO) => void;
 };
 
-export default function TaskModal({ open, onClose, onSaved }: Props) {
+export default function TaskModal({ open, onClose }: Props) {
   const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useState<CategoryDTO[]>([]);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const { addTask } = useDashboard();
 
   const [task, setTask] = useState<TaskInsertDTO>({
     title: '',
@@ -79,8 +80,7 @@ export default function TaskModal({ open, onClose, onSaved }: Props) {
     setErrors({});
 
     try {
-      const response = await insertTask(task);
-      onSaved(response.data);
+      await addTask(task);
       clearForm();
       onClose();
     } catch (error: any) {

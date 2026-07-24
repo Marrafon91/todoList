@@ -94,8 +94,16 @@ export function DashboardProvider({ children }: Props) {
 
   async function addTask(dto: TaskInsertDTO) {
     try {
-      await insertTask(dto);
-      await refreshAll();
+      const response = await insertTask(dto);
+      setTasks((previous) => [response.data, ...previous]);
+
+      const [dashboardResponse, sidebarResponse] = await Promise.all([
+        findDashboard(),
+        findSidebar(),
+      ]);
+
+      setDashboard(dashboardResponse.data);
+      setSidebar(sidebarResponse.data);
     } catch (error) {
       console.log(error);
       throw error;
