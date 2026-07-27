@@ -44,6 +44,8 @@ type DashboardContextData = {
   deleteTask: (id: number) => Promise<void>;
   deleteAllTasks: () => Promise<void>;
   toggleTaskDone: (task: TaskDTO) => Promise<void>;
+  sidebarOpen: boolean;
+  setSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const DashboardContext = createContext({} as DashboardContextData);
@@ -57,6 +59,7 @@ export function DashboardProvider({ children }: Props) {
   const [sidebar, setSidebar] = useState<SidebarDTO>();
   const [tasks, setTasks] = useState<TaskDTO[]>([]);
   const [loading, setLoading] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
 
   const [filters, setFilters] = useState<TaskFilterDTO>({
     title: '',
@@ -210,6 +213,8 @@ export function DashboardProvider({ children }: Props) {
         deleteTask,
         deleteAllTasks,
         toggleTaskDone,
+        sidebarOpen,
+        setSidebarOpen,
       }}
     >
       {children}

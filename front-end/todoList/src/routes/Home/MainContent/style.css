@@ -1,2 +1,12 @@
+.main-content {
+  padding: 32px;
+  transition: margin-left 0.3s;
+}
 
+.main-content.sidebar-open {
+  margin-left: 280px;
+}
 
+.main-content.sidebar-closed {
+  margin-left: 70px;
+}

@@ -10,7 +10,10 @@ import ConfirmModal from '../../../components/ConfirmModal';
 
 import { useDashboard } from '../../../context/DashboardContext';
 import type { TaskDTO } from '../../../models/task';
+
 import { Trash2 } from 'lucide-react';
+
+import './style.css';
 
 export default function MainContent() {
   const {
@@ -18,6 +21,7 @@ export default function MainContent() {
     tasks,
     filters,
     setFilters,
+    sidebarOpen,
     toggleTaskDone,
     deleteTask,
     deleteAllTasks,
@@ -25,10 +29,10 @@ export default function MainContent() {
 
   const [openModal, setOpenModal] = useState(false);
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
+  const [openDeleteAllModal, setOpenDeleteAllModal] = useState(false);
 
   const [editingTask, setEditingTask] = useState<TaskDTO | null>(null);
   const [taskSelected, setTaskSelected] = useState<number | null>(null);
-  const [openDeleteAllModal, setOpenDeleteAllModal] = useState(false);
 
   function handleNewTask() {
     setEditingTask(null);
@@ -48,37 +52,37 @@ export default function MainContent() {
   async function handleConfirmDelete() {
     if (taskSelected !== null) {
       await deleteTask(taskSelected);
-
       setOpenConfirmModal(false);
       setTaskSelected(null);
     }
   }
 
   async function handleConfirmDeleteAll() {
-    try {
-      await deleteAllTasks();
-
-      setOpenDeleteAllModal(false);
-    } catch (error) {
-      console.log(error);
-    }
+    await deleteAllTasks();
+    setOpenDeleteAllModal(false);
   }
 
   if (!dashboard) {
-    return <p>Carregando... Esperando a Resposta do Backend</p>;
+    return <p>Carregando...</p>;
   }
 
   return (
-    <>
+    <main
+      className={`main-content ${
+        sidebarOpen ? 'sidebar-open' : 'sidebar-closed'
+      }`}
+    >
       <HeaderContent dashboard={dashboard} />
+
       <DashboardCards dashboard={dashboard} />
+
       <AddTask onClick={handleNewTask} />
 
       <div className="search-container">
         <SearchBar
           value={filters.title ?? ''}
           onChange={(value) =>
-            setFilters((previous: any) => ({
+            setFilters((previous) => ({
               ...previous,
               title: value,
             }))
@@ -128,6 +132,6 @@ export default function MainContent() {
           setTaskSelected(null);
         }}
       />
-    </>
+    </main>
   );
 }
