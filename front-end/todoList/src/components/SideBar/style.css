@@ -159,10 +159,12 @@
 
 .sidebar.collapsed .category-item {
   justify-content: center;
+  padding: 12px;
 }
 
 .sidebar.collapsed .category-left {
-  gap: 0;
+  justify-content: center;
+  width: 100%;
 }
 
 .sidebar.collapsed .category-left span {

@@ -3,7 +3,7 @@ import type { ReactNode } from 'react';
 import './style.css';
 
 type Props = {
-  children: React.ReactNode;
+  children: ReactNode;
   content: string;
   disabled?: boolean;
 };
