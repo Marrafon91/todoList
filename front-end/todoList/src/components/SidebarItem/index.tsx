@@ -1,5 +1,8 @@
 import './style.css';
 
+import AppTooltip from '../Tooltip';
+import { useDashboard } from '../../context/DashboardContext';
+
 type Props = {
   icon: React.ReactNode;
   title: string;
@@ -15,14 +18,22 @@ export default function SidebarItem({
   active = false,
   onClick,
 }: Props) {
-  return (
-    <div className={`sidebar-item ${active ? 'active' : ''}`} onClick={onClick}>
-      <div className="sidebar-left">
-        {icon}
-        <span>{title}</span>
-      </div>
+  const { sidebarOpen } = useDashboard();
 
-      <span className="sidebar-count">{quantity}</span>
-    </div>
+  return (
+    <AppTooltip content={title} disabled={sidebarOpen}>
+      <div
+        className={`sidebar-item ${active ? 'active' : ''}`}
+        onClick={onClick}
+      >
+        <div className="sidebar-left">
+          {icon}
+
+          {sidebarOpen && <span>{title}</span>}
+        </div>
+
+        {sidebarOpen && <span className="sidebar-count">{quantity}</span>}
+      </div>
+    </AppTooltip>
   );
 }

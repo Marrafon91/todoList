@@ -12,6 +12,7 @@ import { useDashboard } from '../../context/DashboardContext';
 
 import SidebarItem from '../SidebarItem';
 import CategoryItem from '../CategoryItem';
+import AppTooltip from '../Tooltip';
 
 export default function Sidebar() {
   const { sidebar, filters, setFilters, sidebarOpen, setSidebarOpen } =
@@ -24,12 +25,14 @@ export default function Sidebar() {
   return (
     <aside className={`sidebar ${!sidebarOpen ? 'collapsed' : ''}`}>
       <div className="sidebar-header">
-        <div
-          className="sidebar-logo"
-          onClick={() => setSidebarOpen(!sidebarOpen)}
-        >
-          <ListTodo size={24} />
-        </div>
+        <AppTooltip content={sidebarOpen ? 'Recolher menu' : 'Expandir menu'}>
+          <div
+            className="sidebar-logo"
+            onClick={() => setSidebarOpen(!sidebarOpen)}
+          >
+            <ListTodo size={24} />
+          </div>
+        </AppTooltip>
 
         <div className="sidebar-brand">
           <h2 className="sidebar-title-main">Tarefas</h2>
