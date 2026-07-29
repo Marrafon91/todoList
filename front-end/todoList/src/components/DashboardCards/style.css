@@ -6,7 +6,7 @@
 
 .dashboard-card-title {
   font-size: 13px;
-  color: #6b7280;
+  color: var(--color-text-muted);
 }
 
 .dashboard-card-value {

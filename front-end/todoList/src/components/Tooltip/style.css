@@ -1,6 +1,6 @@
 .tooltip-content {
-  background: #111827;
-  color: white;
+  background: var(--color-tooltip);
+  color: var(--color-background);
   padding: 8px 12px;
   border-radius: 8px;
   font-size: 14px;
@@ -10,7 +10,7 @@
 }
 
 .tooltip-arrow {
-  fill: #111827;
+  fill: var(--color-tooltip);
 }
 
 @keyframes tooltipShow {

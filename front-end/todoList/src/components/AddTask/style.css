@@ -6,7 +6,7 @@
   padding: 0;
   border: none;
   background: transparent;
-  color: #2563eb;
+  color: var(--color-primary);
   font-family: inherit;
   font-size: 16px;
   font-weight: 600;
@@ -18,8 +18,8 @@
   height: 45px;
   border: none;
   border-radius: 50%;
-  background: #2563eb;
-  color: #ffffff;
+  background: var(--color-primary);
+  color: var(--color-btn);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -28,11 +28,11 @@
 }
 
 .add-task:hover .add-task-button {
-  background: #1d4ed8;
+  background: var(--color-primary-hover);
 }
 
 .add-task:hover {
-  color: #1d4ed8;
+  color: var(--color-primary-hover);
 }
 
 /* ========================= */

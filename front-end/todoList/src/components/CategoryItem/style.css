@@ -9,11 +9,11 @@
 }
 
 .category-item:hover {
-  background: #f8fafc;
+  background: var(--color-background-hover);
 }
 
 .category-item.active {
-  background: #eef5ff;
+  background: var(--color-background-active);
 }
 
 .category-left {
@@ -34,11 +34,11 @@
 .category-left span:last-child {
   font-size: 15px;
   font-weight: 500;
-  color: #1f2937;
+  color: var(--color-text-primary);
 }
 
 .category-quantity {
   font-size: 14px;
   font-weight: 500;
-  color: #374151;
+  color: var(--color-text-secondary);
 }

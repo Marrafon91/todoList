@@ -4,7 +4,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: var(--color-background-active-modal);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -12,7 +12,7 @@
 }
 
 .modal {
-  background-color: white;
+  background-color: var(--color-background-card);
   padding: 30px;
   border-radius: 10px;
   min-width: 350px;
@@ -24,7 +24,7 @@
   padding: 10px;
   margin: 4px 0;
   border: none;
-  color: #ccc;
+  color: var(--color-btn);
   border-radius: 10px;
   cursor: pointer;
   font-size: 14px;
@@ -36,8 +36,8 @@
   height: 45px;
   border-radius: 50%;
   border: none;
-  background: #dc2626;
-  color: white;
+  background: var(--color-danger);
+  color: var(--color-btn);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -51,21 +51,21 @@
 }
 
 .delete-all-button:hover {
-  background: #b91c1c;
+  background: var(--color-btn-danger-all-hover);
 }
 
 .cancel-button {
-  background: #64748b;
+  background: var(--color-btn-cancel);
 }
 
 .cancel-button:hover {
-  background: #475569;
+  background: var(--color-btn-cancel-hover);
 }
 
 .delete-confirm-button {
-  background: #dc2626ad;
+  background: var(--color-danger-hover);
 }
 
 .delete-confirm-button:hover {
-  background: #b91c1c;
+  background: var(--color-btn-danger-all-hover);
 }

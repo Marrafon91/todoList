@@ -1,11 +1,16 @@
 import { useEffect, useState } from 'react';
+import axios from 'axios';
+
 import './style.css';
 
 import type { CategoryDTO } from '../../models/category';
 import type { TaskDTO, TaskInsertDTO, TaskUpdateDTO } from '../../models/task';
 
+import type { ValidationErrorResponse } from '../../models/error';
+
 import { findAllCategories } from '../../services/category-service';
 import { useDashboard } from '../../context/DashboardContext';
+
 import ButtonSecondary from '../ButtonSecondary';
 import ButtonPrimary from '../ButtonPrimary';
 
@@ -30,17 +35,10 @@ export default function TaskModal({ open, onClose, taskToEdit }: Props) {
     dueDate: '',
   });
 
-  async function loadCategories() {
-    try {
-      const response = await findAllCategories();
-      setCategories(response.data);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
   useEffect(() => {
-    if (!open) return;
+    if (!open) {
+      return;
+    }
 
     loadCategories();
 
@@ -52,10 +50,21 @@ export default function TaskModal({ open, onClose, taskToEdit }: Props) {
         categoryId: taskToEdit.category.id,
         dueDate: taskToEdit.dueDate,
       });
+
+      setErrors({});
     } else {
       clearForm();
     }
   }, [open, taskToEdit]);
+
+  async function loadCategories() {
+    try {
+      const response = await findAllCategories();
+      setCategories(response.data);
+    } catch (error: unknown) {
+      console.error('Erro ao carregar categorias:', error);
+    }
+  }
 
   function handleChange(
     event: React.ChangeEvent<
@@ -89,7 +98,7 @@ export default function TaskModal({ open, onClose, taskToEdit }: Props) {
     setErrors({});
   }
 
-  async function handleSubmit(event: React.FormEvent) {
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     setLoading(true);
@@ -98,28 +107,38 @@ export default function TaskModal({ open, onClose, taskToEdit }: Props) {
     try {
       if (taskToEdit) {
         const dto: TaskUpdateDTO = {
-          ...task,
-          done: taskToEdit.done,
+          title: task.title,
+          description: task.description,
+          priority: task.priority,
+          categoryId: task.categoryId,
+          dueDate: task.dueDate,
         };
 
         await updateTask(taskToEdit.id, dto);
       } else {
         await addTask(task);
       }
+
       clearForm();
       onClose();
-    } catch (error: any) {
+    } catch (error: unknown) {
+      if (!axios.isAxiosError<ValidationErrorResponse>(error)) {
+        console.error('Erro inesperado:', error);
+        return;
+      }
+
       if (error.response?.status === 422) {
         const validationErrors: Record<string, string> = {};
 
-        error.response.data.errors.forEach((item: any) => {
+        error.response.data.errors.forEach((item) => {
           validationErrors[item.fieldName] = item.message;
         });
 
         setErrors(validationErrors);
-      } else {
-        console.log(error);
+        return;
       }
+
+      console.error('Erro ao salvar tarefa:', error);
     } finally {
       setLoading(false);
     }
@@ -139,6 +158,7 @@ export default function TaskModal({ open, onClose, taskToEdit }: Props) {
       <div className="task-modal" onClick={(event) => event.stopPropagation()}>
         <div className="modal-header">
           <h2>{taskToEdit ? 'Editar tarefa' : 'Nova tarefa'}</h2>
+
           <p>
             {taskToEdit
               ? 'Atualize as informações da tarefa.'
@@ -219,7 +239,9 @@ export default function TaskModal({ open, onClose, taskToEdit }: Props) {
                 onChange={handleChange}
               >
                 <option value="LOW">🟢 Baixa</option>
+
                 <option value="MEDIUM">🟡 Média</option>
+
                 <option value="HIGH">🔴 Alta</option>
               </select>
             </div>

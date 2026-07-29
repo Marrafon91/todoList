@@ -1,8 +1,8 @@
 .btn-primary {
-  background: #2563EB;
+  background: var(--color-primary);
   color: white;
 }
 
 .btn-primary:hover {
-  background: #1D4ED8;
+  background: var(--color-primary-hover);
 }

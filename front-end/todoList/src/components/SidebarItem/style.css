@@ -6,16 +6,16 @@
   border-radius: 12px;
   cursor: pointer;
   transition: all 0.2s ease;
-  color: #374151;
+  color: var(--color-text-secondary);
 }
 
 .sidebar-item:hover {
-  background-color: #f8fafc;
+  background-color: var(--color-background-hover);
 }
 
 .sidebar-item.active {
-  background-color: #dbeafe;
-  color: #2563eb;
+  background-color: var(--color-primary-light);
+  color: var(--color-primary);
 }
 
 .sidebar-left {
@@ -37,13 +37,13 @@
 .sidebar-count {
   font-size: 15px;
   font-weight: 500;
-  color: #374151;
+  color: var(--color-text-secondary);
 }
 
 .sidebar-item.active .sidebar-count {
-  color: #2563eb;
+  color: var(--color-primary);
 }
 
 .sidebar-item.active svg {
-  color: #2563eb;
+  color: var(--color-primary);
 }

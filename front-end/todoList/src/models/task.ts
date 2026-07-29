@@ -24,7 +24,7 @@ export type TaskInsertDTO = {
 export type TaskFilterDTO = {
   title?: string;
   done?: boolean;
-  priority?: string;
+  priority?: Priority;
   categoryId?: number;
 };
 

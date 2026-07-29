@@ -2,26 +2,26 @@
   display: flex;
   align-items: center;
   gap: 18px;
-  background: white;
-  border: 1px solid #e5e7eb;
+  background: var(--color-background);
+  border: 1px solid var(--color-border);
   border-radius: 16px;
   padding: 18px;
   transition: 0.25s;
 }
 
 .task-card:hover {
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  box-shadow: var(--shadow-task-card);
 }
 
 .task-check {
   border: none;
   background: none;
   cursor: pointer;
-  color: #cbd5e1;
+  color: var(--color-task-check);
 }
 
 .task-check:hover {
-  color: #2563eb;
+  color: var(--color-primary);
 }
 
 .task-content {
@@ -30,12 +30,12 @@
 
 .task-content h3 {
   font-size: 17px;
-  color: #1f2937;
+  color: var(--color-text-primary);
 }
 
 .task-content p {
   margin-top: 5px;
-  color: #6b7280;
+  color: var(--color-text-muted);
   font-size: 14px;
 }
 
@@ -55,7 +55,7 @@
 }
 
 .category {
-  background: #f3f4f6;
+  background: var(--color-background);
 }
 
 .category-dot {
@@ -65,45 +65,45 @@
 }
 
 .priority.high {
-  color: #dc2626;
-  background: #fef2f2;
+  color: var(--priority-high-color);
+  background: var(--priority-high-background);
 }
 
 .priority.medium {
-  color: #d97706;
-  background: #fff7ed;
+  color: var(--color-warning);
+  background: var(--priority-medium-background);
 }
 
 .priority.low {
-  color: #64748b;
-  background: #f1f5f9;
+  color: var(--priority-low-color);
+  background: var(--priority-low-background);
 }
 
 .date {
-  background: #f9fafb;
-  color: #6b7280;
+  background: var(--color-date-background);
+  color: var(--color-text-muted);
 }
 
 .icon-button {
   border: none;
   background: none;
   cursor: pointer;
-  color: #94a3b8;
+  color: var(--color-text-placeholder);
   transition: 0.2s;
 }
 
 .icon-button:hover {
-  color: #2563eb;
+  color: var(--color-primary);
 }
 
 .icon-button.delete:hover {
-  color: #dc2626;
+  color: var(--color-danger);
 }
 
 .completed {
   opacity: 0.75;
 
-  background: #f8fafc;
+  background: var(--color-background-hover);
 }
 
 .completed h3 {
