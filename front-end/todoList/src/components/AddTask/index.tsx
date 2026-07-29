@@ -7,11 +7,12 @@ type Props = {
 
 export default function AddTask({ onClick }: Props) {
   return (
-    <div className="add-task" onClick={onClick}>
-      <button className="add-task-button">
+    <button className="add-task" onClick={onClick}>
+      <span className="add-task-button">
         <Plus size={22} />
-      </button>
+      </span>
+
       <span>Adicionar uma nova tarefa...</span>
-    </div>
+    </button>
   );
 }

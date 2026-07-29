@@ -22,3 +22,28 @@
 .task-list-empty p {
   color: #786b80;
 }
+
+/* ========================= */
+/* RESPONSIVIDADE - CELULAR */
+/* ========================= */
+
+@media (max-width: 767.98px) {
+  .task-list {
+    gap: 10px;
+    margin-top: 16px;
+  }
+
+  .task-list-empty {
+    margin-top: 20px;
+    padding: 30px 20px;
+    border-radius: 14px;
+  }
+
+  .task-list-empty h3 {
+    font-size: 16px;
+  }
+
+  .task-list-empty p {
+    font-size: 14px;
+  }
+}

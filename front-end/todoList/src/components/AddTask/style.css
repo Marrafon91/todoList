@@ -3,7 +3,12 @@
   align-items: center;
   gap: 12px;
   margin: 20px 0;
+  padding: 0;
+  border: none;
+  background: transparent;
   color: #2563eb;
+  font-family: inherit;
+  font-size: 16px;
   font-weight: 600;
   cursor: pointer;
 }
@@ -11,20 +16,39 @@
 .add-task-button {
   width: 45px;
   height: 45px;
-  border-radius: 50%;
   border: none;
+  border-radius: 50%;
   background: #2563eb;
-  color: white;
+  color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
+  flex-shrink: 0;
+  transition: background-color 0.2s ease;
 }
 
-.add-task-button:hover {
+.add-task:hover .add-task-button {
   background: #1d4ed8;
 }
 
-.add-task span {
-  font-size: 16px;
+.add-task:hover {
+  color: #1d4ed8;
+}
+
+/* ========================= */
+/* CELULAR */
+/* ========================= */
+
+@media (max-width: 767.98px) {
+  .add-task {
+    gap: 10px;
+    margin: 16px 0;
+
+    font-size: 14px;
+  }
+
+  .add-task-button {
+    width: 42px;
+    height: 42px;
+  }
 }

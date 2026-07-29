@@ -1,8 +1,6 @@
 .dashboard-cards {
   display: grid;
-
   grid-template-columns: repeat(2, 1fr);
-
   gap: 16px;
 }
 
@@ -17,8 +15,29 @@
   font-weight: 700;
 }
 
+/* ========================= */
+/* DESKTOP - >= 992px */
+/* ========================= */
+
 @media (min-width: 992px) {
   .dashboard-cards {
     display: flex;
+    gap: 20px;
+  }
+}
+
+/* ========================= */
+/* CELULAR - < 576px */
+/* ========================= */
+
+@media (max-width: 575.98px) {
+  .dashboard-cards {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .dashboard-card-value {
+    margin-top: 6px;
+    font-size: 28px;
   }
 }

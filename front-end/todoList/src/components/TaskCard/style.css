@@ -113,3 +113,79 @@
 .completed p {
   text-decoration: line-through;
 }
+
+/* ========================================================= */
+/* RESPONSIVIDADE - CELULAR */
+/* ========================================================= */
+
+@media (max-width: 767.98px) {
+  .task-card {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 8px 12px;
+    padding: 16px;
+    border-radius: 14px;
+  }
+
+  .task-check {
+    grid-column: 1;
+    grid-row: 1;
+    align-self: start;
+    margin-top: 2px;
+  }
+
+  .task-content {
+    grid-column: 2;
+    min-width: 0;
+  }
+
+  .task-content h3 {
+    font-size: 15px;
+    line-height: 1.4;
+    margin: 0;
+
+    /* evita título estourar o card */
+    overflow-wrap: anywhere;
+  }
+
+  .task-content p {
+    font-size: 13px;
+    line-height: 1.4;
+    margin-top: 4px;
+
+    overflow-wrap: anywhere;
+  }
+
+  .task-right {
+    grid-column: 2;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+
+    margin-top: 4px;
+  }
+
+  .tag {
+    padding: 5px 9px;
+    font-size: 12px;
+  }
+
+  .category-dot {
+    width: 7px;
+    height: 7px;
+  }
+
+  .date {
+    font-size: 12px;
+  }
+
+  .icon-button {
+    padding: 4px;
+  }
+
+  .icon-button svg {
+    width: 17px;
+    height: 17px;
+  }
+}

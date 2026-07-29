@@ -22,3 +22,24 @@
   gap: 12px;
   margin-bottom: 24px;
 }
+
+/* ========================= */
+/* RESPONSIVIDADE - CELULAR */
+/* ========================= */
+
+@media (max-width: 767.98px) {
+  .search-container {
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .search-bar {
+    min-width: 0;
+    padding: 12px 14px;
+    border-radius: 12px;
+  }
+
+  .search-bar input {
+    font-size: 14px;
+  }
+}
