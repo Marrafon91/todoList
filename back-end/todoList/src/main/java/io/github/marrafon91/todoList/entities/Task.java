@@ -28,7 +28,7 @@ public class Task {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Priority priority;
+    private Priority priority = null;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")

@@ -12,7 +12,7 @@ public record TaskUpdateDTO(
         @Size(min = 3, max = 100)
         String title,
 
-        @Size(max = 500)
+        @Size(min = 10 ,max = 500, message = "tamanho deve ser entre 10 e 500")
         String description,
 
         @NotNull(message = "A prioridade é obrigatória")

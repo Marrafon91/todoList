@@ -2,20 +2,14 @@
   position: fixed;
   top: 0;
   left: 0;
-
   width: 280px;
   height: 100vh;
-
   padding: 24px;
-
   background: #ffffff;
   border-right: 1px solid #e5e7eb;
-
   display: flex;
   flex-direction: column;
-
   overflow-y: auto;
-
   transition: width 0.3s ease;
   z-index: 1000;
 }
@@ -26,25 +20,19 @@
   display: flex;
   align-items: center;
   gap: 14px;
-
   margin-bottom: 30px;
 }
 
 .sidebar-toggle {
   width: 40px;
   height: 40px;
-
   border: none;
   border-radius: 8px;
-
   background: transparent;
-
   display: flex;
   justify-content: center;
   align-items: center;
-
   cursor: pointer;
-
   transition: 0.2s;
 }
 
@@ -83,10 +71,8 @@
 
 .sidebar-subtitle {
   margin-top: 4px;
-
   color: #6b7280;
   font-size: 14px;
-
   white-space: nowrap;
 }
 
@@ -101,12 +87,9 @@
 .sidebar-category-title {
   margin-top: 30px;
   margin-bottom: 10px;
-
   font-size: 13px;
   font-weight: 700;
-
   letter-spacing: 1px;
-
   color: #6b7280;
 }
 
@@ -167,7 +150,7 @@
   width: 100%;
 }
 
-.sidebar.collapsed .category-left span {
+.sidebar.collapsed .category-left > span:not(.category-color) {
   display: none;
 }
 
