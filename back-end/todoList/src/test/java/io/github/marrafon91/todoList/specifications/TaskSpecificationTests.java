@@ -1,5 +1,6 @@
 package io.github.marrafon91.todoList.specifications;
 
+import io.github.marrafon91.todoList.entities.Category;
 import io.github.marrafon91.todoList.entities.Priority;
 import io.github.marrafon91.todoList.entities.Task;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -10,21 +11,38 @@ import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.jpa.domain.Specification;
 
+@ExtendWith(MockitoExtension.class)
 public class TaskSpecificationTests {
 
-    private final Root<Task> root = Mockito.mock(Root.class);
-    private final CriteriaQuery<?> query = Mockito.mock(CriteriaQuery.class);
-    private final CriteriaBuilder builder = Mockito.mock(CriteriaBuilder.class);
+    @Mock
+    private Root<Task> root;
+    @Mock
+    private CriteriaQuery<?> query;
+    @Mock
+    private CriteriaBuilder builder;
+    @Mock
+    private Path<String> titlePath;
+    @Mock
+    private Path<Boolean> donePath;
+    @Mock
+    private Path<Priority> priorityPath;
+    @Mock
+    private Path<Category> categoryPath;
+    @Mock
+    private Path<Long> categoryIdPath;
+    @Mock
+    private Expression<String> lowerTitlePath;
+    @Mock
+    private Predicate predicate;
 
     @Test
     public void titleContainsShouldReturnPredicateWhenTitleIsValid() {
-
-        Path<String> titlePath = Mockito.mock(Path.class);
-        Expression<String> lowerTitlePath = Mockito.mock(Expression.class);
-        Predicate predicate = Mockito.mock(Predicate.class);
 
         Mockito.when(root.<String>get("title"))
                 .thenReturn(titlePath);
@@ -77,9 +95,6 @@ public class TaskSpecificationTests {
     @Test
     public void doneShouldReturnPredicateWhenDoneIsValid() {
 
-        Path<Boolean> donePath = Mockito.mock(Path.class);
-        Predicate predicate = Mockito.mock(Predicate.class);
-
         Mockito.when(root.<Boolean>get("done"))
                 .thenReturn(donePath);
 
@@ -113,9 +128,6 @@ public class TaskSpecificationTests {
 
     @Test
     public void priorityShouldReturnPredicateWhenPriorityIsValid() {
-
-        Path<Priority> priorityPath = Mockito.mock(Path.class);
-        Predicate predicate = Mockito.mock(Predicate.class);
 
         Mockito.when(root.<Priority>get("priority"))
                 .thenReturn(priorityPath);
@@ -151,14 +163,10 @@ public class TaskSpecificationTests {
     @Test
     public void categoryShouldReturnPredicateWhenCategoryIdIsValid() {
 
-        Path<Object> categoryPath = Mockito.mock(Path.class);
-        Path<Object> categoryIdPath = Mockito.mock(Path.class);
-        Predicate predicate = Mockito.mock(Predicate.class);
-
-        Mockito.when(root.get("category"))
+        Mockito.when(root.<Category>get("category"))
                 .thenReturn(categoryPath);
 
-        Mockito.when(categoryPath.get("id"))
+        Mockito.when(categoryPath.<Long>get("id"))
                 .thenReturn(categoryIdPath);
 
         Mockito.when(builder.equal(categoryIdPath, 1L))
