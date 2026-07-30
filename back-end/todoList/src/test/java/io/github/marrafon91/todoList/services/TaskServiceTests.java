@@ -1,10 +1,12 @@
 package io.github.marrafon91.todoList.services;
 
 import io.github.marrafon91.todoList.dtos.TaskDTO;
+import io.github.marrafon91.todoList.dtos.TaskInsertDTO;
 import io.github.marrafon91.todoList.entities.Category;
 import io.github.marrafon91.todoList.entities.Priority;
 import io.github.marrafon91.todoList.entities.Task;
 import io.github.marrafon91.todoList.exceptions.ResourceNotFoundException;
+import io.github.marrafon91.todoList.repositories.CategoryRepository;
 import io.github.marrafon91.todoList.repositories.TaskRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,6 +18,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.jpa.domain.Specification;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,8 +31,13 @@ public class TaskServiceTests {
     @Mock
     private TaskRepository taskRepository;
 
+    @Mock
+    private CategoryRepository categoryRepository;
+
     private long existingTaskId, nonExistingTaskId;
     private Task taskEntity;
+    private TaskInsertDTO taskInsertDTO;
+    private Category category;
 
     @BeforeEach
     public void setUp() {
@@ -37,7 +45,7 @@ public class TaskServiceTests {
         existingTaskId = 1L;
         nonExistingTaskId = 2L;
 
-        Category category = new Category();
+        category = new Category();
         category.setId(1L);
         category.setName("Estudos");
         category.setColor("#3B82F6");
@@ -47,16 +55,27 @@ public class TaskServiceTests {
         taskEntity.setTitle("Estudar Java");
         taskEntity.setDescription("Estudar testes automatizados");
         taskEntity.setDone(false);
+        taskEntity.setPriority(Priority.HIGH);
+        taskEntity.setDueDate(LocalDate.now());
         taskEntity.setCategory(category);
+
+        taskInsertDTO  = new TaskInsertDTO(
+                "Estudar Java",
+                "Estudar testes automatizados",
+                Priority.HIGH,
+                1L,
+                LocalDate.now()
+        );
     }
 
     @Test
     public void findAllShouldReturnAllTaskDTOList() {
 
-        Mockito.when(taskRepository.findAll(Mockito.any(Specification.class)))
-                .thenReturn(List.of(taskEntity));
+        Mockito.when(
+                taskRepository.findAll(Mockito.<Specification<Task>>any())
+        ).thenReturn(List.of(taskEntity));
 
-        List<TaskDTO> result = taskService.findAll(null,null,null,null);
+        List<TaskDTO> result = taskService.findAll(null, null, null, null);
 
         Assertions.assertNotNull(result);
         Assertions.assertEquals(1, result.size());
@@ -70,14 +89,16 @@ public class TaskServiceTests {
         Assertions.assertEquals(1L, dto.category().id());
         Assertions.assertEquals("Estudos", dto.category().name());
 
-        Mockito.verify(taskRepository).findAll(Mockito.any(Specification.class));
+        Mockito.verify(taskRepository)
+                .findAll(Mockito.<Specification<Task>>any());
     }
 
     @Test
     public void findAllShouldReturnFilteredTasks() {
 
-        Mockito.when(taskRepository.findAll(Mockito.any(Specification.class)))
-                .thenReturn(List.of(taskEntity));
+        Mockito.when(
+                taskRepository.findAll(Mockito.<Specification<Task>>any())
+        ).thenReturn(List.of(taskEntity));
 
         List<TaskDTO> result = taskService.findAll(
                 "Java",
@@ -89,10 +110,10 @@ public class TaskServiceTests {
         Assertions.assertNotNull(result);
         Assertions.assertEquals(1, result.size());
 
-        Assertions.assertEquals(existingTaskId, result.get(0).id());
+        Assertions.assertEquals(existingTaskId, result.getFirst().id());
 
         Mockito.verify(taskRepository)
-                .findAll(Mockito.any(Specification.class));
+                .findAll(Mockito.<Specification<Task>>any());
     }
 
     @Test
@@ -126,5 +147,30 @@ public class TaskServiceTests {
         );
 
         Mockito.verify(taskRepository).findById(nonExistingTaskId);
+    }
+
+    @Test
+    public void insertShouldReturnTaskDTO() {
+        Mockito.when(categoryRepository.findById(1L))
+                .thenReturn(Optional.of(category));
+
+        Mockito.when(taskRepository.save(Mockito.any(Task.class)))
+                .thenReturn(taskEntity);
+
+        TaskDTO result = taskService.insert(taskInsertDTO);
+
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(existingTaskId, result.id());
+        Assertions.assertEquals(taskInsertDTO.title(), result.title());
+        Assertions.assertEquals(taskInsertDTO.description(), result.description());
+        Assertions.assertEquals(taskInsertDTO.priority(), result.priority());
+        Assertions.assertEquals(taskInsertDTO.dueDate(), result.dueDate());
+
+        Assertions.assertNotNull(result.category());
+        Assertions.assertEquals(1L, result.category().id());
+        Assertions.assertEquals("Estudos", result.category().name());
+
+        Mockito.verify(categoryRepository).findById(1L);
+        Mockito.verify(taskRepository).save(Mockito.any(Task.class));
     }
 }
