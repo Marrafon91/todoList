@@ -187,6 +187,21 @@ public class TaskServiceTests {
     }
 
     @Test
+    public void insertShouldThrowResourceNotFoundExceptionWhenCategoryDoesNotExist() {
+
+        Mockito.when(categoryRepository.findById(taskInsertDTO.categoryId()))
+                .thenReturn(Optional.empty());
+
+        Assertions.assertThrows(
+                ResourceNotFoundException.class,
+                () -> taskService.insert(taskInsertDTO)
+        );
+
+        Mockito.verify(categoryRepository).findById(taskInsertDTO.categoryId());
+        Mockito.verify(taskRepository, Mockito.never()).save(Mockito.any(Task.class));
+    }
+
+    @Test
     public void updateShouldReturnTaskDTOWhenIdExists() {
 
         Mockito.when(categoryRepository.findById(category.getId()))
