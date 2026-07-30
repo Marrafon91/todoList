@@ -2,12 +2,14 @@ package io.github.marrafon91.todoList.services;
 
 import io.github.marrafon91.todoList.dtos.TaskDTO;
 import io.github.marrafon91.todoList.dtos.TaskInsertDTO;
+import io.github.marrafon91.todoList.dtos.TaskUpdateDTO;
 import io.github.marrafon91.todoList.entities.Category;
 import io.github.marrafon91.todoList.entities.Priority;
 import io.github.marrafon91.todoList.entities.Task;
 import io.github.marrafon91.todoList.exceptions.ResourceNotFoundException;
 import io.github.marrafon91.todoList.repositories.CategoryRepository;
 import io.github.marrafon91.todoList.repositories.TaskRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -37,6 +39,7 @@ public class TaskServiceTests {
     private long existingTaskId, nonExistingTaskId;
     private Task taskEntity;
     private TaskInsertDTO taskInsertDTO;
+    private TaskUpdateDTO  taskUpdateDTO;
     private Category category;
 
     @BeforeEach
@@ -54,9 +57,9 @@ public class TaskServiceTests {
         taskEntity.setId(existingTaskId);
         taskEntity.setTitle("Estudar Java");
         taskEntity.setDescription("Estudar testes automatizados");
-        taskEntity.setDone(false);
         taskEntity.setPriority(Priority.HIGH);
         taskEntity.setDueDate(LocalDate.now());
+        taskEntity.setDone(false);
         taskEntity.setCategory(category);
 
         taskInsertDTO  = new TaskInsertDTO(
@@ -65,6 +68,15 @@ public class TaskServiceTests {
                 Priority.HIGH,
                 1L,
                 LocalDate.now()
+        );
+
+        taskUpdateDTO  = new TaskUpdateDTO(
+                "Apender Programar",
+                "Aprender mais sobre Programação",
+                Priority.MEDIUM,
+                category.getId(),
+                LocalDate.now(),
+                false
         );
     }
 
@@ -172,5 +184,53 @@ public class TaskServiceTests {
 
         Mockito.verify(categoryRepository).findById(1L);
         Mockito.verify(taskRepository).save(Mockito.any(Task.class));
+    }
+
+    @Test
+    public void updateShouldReturnTaskDTOWhenIdExists() {
+
+        Mockito.when(categoryRepository.findById(category.getId()))
+                .thenReturn(Optional.of(category));
+
+        Mockito.when(taskRepository.getReferenceById(existingTaskId))
+                .thenReturn(taskEntity);
+
+        Mockito.when(taskRepository.save(Mockito.any(Task.class)))
+                .thenAnswer(invocation -> invocation.getArgument(0));
+
+        TaskDTO result = taskService.update(existingTaskId, taskUpdateDTO);
+
+        Assertions.assertNotNull(result);
+
+        Assertions.assertEquals(existingTaskId, result.id());
+        Assertions.assertEquals(taskUpdateDTO.title(), result.title());
+        Assertions.assertEquals(taskUpdateDTO.description(), result.description());
+        Assertions.assertEquals(taskUpdateDTO.priority(), result.priority());
+        Assertions.assertEquals(taskUpdateDTO.dueDate(), result.dueDate());
+        Assertions.assertEquals(taskUpdateDTO.done(), result.done());
+
+        Assertions.assertNotNull(result.category());
+        Assertions.assertEquals(category.getId(), result.category().id());
+        Assertions.assertEquals(category.getName(), result.category().name());
+
+        Mockito.verify(taskRepository).getReferenceById(existingTaskId);
+        Mockito.verify(categoryRepository).findById(category.getId());
+        Mockito.verify(taskRepository).save(Mockito.any(Task.class));
+    }
+
+    @Test
+    public void updateShouldThrowResourceNotFoundExceptionWhenIdDoesNotExist() {
+
+        Mockito.when(taskRepository.getReferenceById(nonExistingTaskId))
+                .thenThrow(new EntityNotFoundException());
+
+        Assertions.assertThrows(
+                ResourceNotFoundException.class,
+                () -> taskService.update(nonExistingTaskId, taskUpdateDTO)
+        );
+
+        Mockito.verify(taskRepository).getReferenceById(nonExistingTaskId);
+        Mockito.verify(taskRepository, Mockito.never()).save(Mockito.any(Task.class));
+        Mockito.verify(categoryRepository, Mockito.never()).findById(Mockito.anyLong());
     }
 }
