@@ -6,6 +6,7 @@ import io.github.marrafon91.todoList.dtos.TaskUpdateDTO;
 import io.github.marrafon91.todoList.entities.Category;
 import io.github.marrafon91.todoList.entities.Priority;
 import io.github.marrafon91.todoList.entities.Task;
+import io.github.marrafon91.todoList.exceptions.DatabaseException;
 import io.github.marrafon91.todoList.exceptions.ResourceNotFoundException;
 import io.github.marrafon91.todoList.repositories.CategoryRepository;
 import io.github.marrafon91.todoList.repositories.TaskRepository;
@@ -18,6 +19,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.time.LocalDate;
@@ -36,7 +38,7 @@ public class TaskServiceTests {
     @Mock
     private CategoryRepository categoryRepository;
 
-    private long existingTaskId, nonExistingTaskId;
+    private long existingTaskId, nonExistingTaskId, existingDependentTaskId;
     private Task taskEntity;
     private TaskInsertDTO taskInsertDTO;
     private TaskUpdateDTO  taskUpdateDTO;
@@ -47,6 +49,7 @@ public class TaskServiceTests {
 
         existingTaskId = 1L;
         nonExistingTaskId = 2L;
+        existingDependentTaskId = 3L;
 
         category = new Category();
         category.setId(1L);
@@ -247,5 +250,68 @@ public class TaskServiceTests {
         Mockito.verify(taskRepository).getReferenceById(nonExistingTaskId);
         Mockito.verify(taskRepository, Mockito.never()).save(Mockito.any(Task.class));
         Mockito.verify(categoryRepository, Mockito.never()).findById(Mockito.anyLong());
+    }
+
+    @Test
+    public void deleteShouldDeleteTaskWhenIdExists() {
+
+        Mockito.when(taskRepository.existsById(existingTaskId))
+                .thenReturn(true);
+
+        Assertions.assertDoesNotThrow(
+                () -> taskService.delete(existingTaskId)
+        );
+
+        Mockito.verify(taskRepository).existsById(existingTaskId);
+        Mockito.verify(taskRepository).deleteById(existingTaskId);
+    }
+
+    @Test
+    public void deleteShouldThrowResourceNotFoundExceptionWhenIdDoesNotExist() {
+
+        Mockito.when(taskRepository.existsById(nonExistingTaskId))
+                .thenReturn(false);
+
+        Assertions.assertThrows(
+                ResourceNotFoundException.class,
+                () -> taskService.delete(nonExistingTaskId)
+        );
+
+        Mockito.verify(taskRepository).existsById(nonExistingTaskId);
+        Mockito.verify(taskRepository, Mockito.never()).deleteById(Mockito.anyLong());
+    }
+
+    @Test
+    public void deleteShouldThrowDatabaseExceptionWhenDataIntegrityViolation() {
+
+        Mockito.when(taskRepository.existsById(existingDependentTaskId))
+                .thenReturn(true);
+
+        Mockito.doThrow(DataIntegrityViolationException.class)
+                .when(taskRepository)
+                .deleteById(existingDependentTaskId);
+
+        DatabaseException exception = Assertions.assertThrows(
+                DatabaseException.class,
+                () -> taskService.delete(existingDependentTaskId)
+        );
+
+        Assertions.assertEquals(
+                "Não foi possível excluir a tarefa.",
+                exception.getMessage()
+        );
+
+        Mockito.verify(taskRepository).existsById(existingDependentTaskId);
+        Mockito.verify(taskRepository).deleteById(existingDependentTaskId);
+    }
+
+    @Test
+    public void deleteAllShouldDeleteAllTasks() {
+
+        Assertions.assertDoesNotThrow(
+                () -> taskService.deleteAll()
+        );
+
+        Mockito.verify(taskRepository).deleteAll();
     }
 }
