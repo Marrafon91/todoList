@@ -41,7 +41,7 @@ public class TaskServiceTests {
     private long existingTaskId, nonExistingTaskId, existingDependentTaskId;
     private Task taskEntity;
     private TaskInsertDTO taskInsertDTO;
-    private TaskUpdateDTO  taskUpdateDTO;
+    private TaskUpdateDTO taskUpdateDTO;
     private Category category;
 
     @BeforeEach
@@ -65,7 +65,7 @@ public class TaskServiceTests {
         taskEntity.setDone(false);
         taskEntity.setCategory(category);
 
-        taskInsertDTO  = new TaskInsertDTO(
+        taskInsertDTO = new TaskInsertDTO(
                 "Estudar Java",
                 "Estudar testes automatizados",
                 Priority.HIGH,
@@ -73,7 +73,7 @@ public class TaskServiceTests {
                 LocalDate.now()
         );
 
-        taskUpdateDTO  = new TaskUpdateDTO(
+        taskUpdateDTO = new TaskUpdateDTO(
                 "Apender Programar",
                 "Aprender mais sobre Programação",
                 Priority.MEDIUM,
@@ -313,5 +313,39 @@ public class TaskServiceTests {
         );
 
         Mockito.verify(taskRepository).deleteAll();
+    }
+
+    @Test
+    public void toggleDoneShouldChangeDoneToTrueWhenTaskIsNotDone() {
+
+        Mockito.when(taskRepository.getReferenceById(existingTaskId))
+                .thenReturn(taskEntity);
+
+        TaskDTO result = taskService.toggleDone(existingTaskId);
+
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(existingTaskId, result.id());
+        Assertions.assertTrue(result.done());
+
+        Mockito.verify(taskRepository).getReferenceById(existingTaskId);
+    }
+
+    @Test
+    public void toggleDoneShouldThrowResourceNotFoundExceptionWhenIdDoesNotExist() {
+
+        Mockito.when(taskRepository.getReferenceById(nonExistingTaskId))
+                .thenThrow(new EntityNotFoundException());
+
+        ResourceNotFoundException exception = Assertions.assertThrows(
+                ResourceNotFoundException.class,
+                () -> taskService.toggleDone(nonExistingTaskId)
+        );
+
+        Assertions.assertEquals(
+                "Tarefa com ID " + nonExistingTaskId + " não encontrada",
+                exception.getMessage()
+        );
+
+        Mockito.verify(taskRepository).getReferenceById(nonExistingTaskId);
     }
 }
