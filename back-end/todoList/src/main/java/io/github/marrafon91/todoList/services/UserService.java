@@ -34,7 +34,7 @@ public class UserService {
         List<User> result = userRepository.findByName(name);
 
         if (result.isEmpty()) {
-            throw new ResourceNotFoundException("Usúario com nome " + name + " não encontrado");
+            throw new ResourceNotFoundException("Usuário com nome " + name + " não encontrado");
         }
         return result.stream().map(UserDTO::new).toList();
     }

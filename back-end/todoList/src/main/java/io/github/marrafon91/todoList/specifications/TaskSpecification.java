@@ -4,6 +4,7 @@ import io.github.marrafon91.todoList.entities.Priority;
 import io.github.marrafon91.todoList.entities.Task;
 import org.springframework.data.jpa.domain.Specification;
 
+
 public class TaskSpecification {
 
     public static Specification<Task> titleContains(String title) {
