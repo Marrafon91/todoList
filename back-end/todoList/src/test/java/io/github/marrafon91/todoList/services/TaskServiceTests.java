@@ -345,4 +345,22 @@ public class TaskServiceTests {
 
         Mockito.verify(taskRepository).getReferenceById(nonExistingTaskId);
     }
+
+    @Test
+    public void toggleDoneShouldChangeDoneToFalseWhenTaskIsDone() {
+
+        taskEntity.setDone(true);
+
+        Mockito.when(taskRepository.getReferenceById(existingTaskId))
+                .thenReturn(taskEntity);
+
+        TaskDTO result = taskService.toggleDone(existingTaskId);
+
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(existingTaskId, result.id());
+        Assertions.assertFalse(result.done());
+
+        Mockito.verify(taskRepository)
+                .getReferenceById(existingTaskId);
+    }
 }
