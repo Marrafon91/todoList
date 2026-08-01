@@ -104,8 +104,7 @@ public class TaskServiceTests {
         Assertions.assertEquals(1L, dto.category().id());
         Assertions.assertEquals("Estudos", dto.category().name());
 
-        Mockito.verify(taskRepository)
-                .findAll(Mockito.<Specification<Task>>any());
+        Mockito.verify(taskRepository).findAll(Mockito.<Specification<Task>>any());
     }
 
     @Test
@@ -124,11 +123,9 @@ public class TaskServiceTests {
 
         Assertions.assertNotNull(result);
         Assertions.assertEquals(1, result.size());
-
         Assertions.assertEquals(existingTaskId, result.getFirst().id());
 
-        Mockito.verify(taskRepository)
-                .findAll(Mockito.<Specification<Task>>any());
+        Mockito.verify(taskRepository).findAll(Mockito.<Specification<Task>>any());
     }
 
     @Test
