@@ -61,7 +61,7 @@ public class TaskSpecificationTests {
         Assertions.assertNotNull(result);
         Assertions.assertEquals(predicate, result);
 
-        Mockito.verify(root).get("title");
+        Mockito.verify(root).<String>get("title");
         Mockito.verify(builder).lower(titlePath);
         Mockito.verify(builder).like(lowerTitlePath, "%java%");
     }
@@ -86,9 +86,7 @@ public class TaskSpecificationTests {
                 TaskSpecification.titleContains("   ");
 
         Predicate result = specification.toPredicate(root, query, builder);
-
         Assertions.assertNull(result);
-
         Mockito.verifyNoInteractions(root, builder);
     }
 
@@ -105,11 +103,9 @@ public class TaskSpecificationTests {
                 TaskSpecification.done(true);
 
         Predicate result = specification.toPredicate(root, query, builder);
-
         Assertions.assertNotNull(result);
         Assertions.assertEquals(predicate, result);
-
-        Mockito.verify(root).get("done");
+        Mockito.verify(root).<Boolean>get("done");
         Mockito.verify(builder).equal(donePath, true);
     }
 
@@ -120,9 +116,7 @@ public class TaskSpecificationTests {
                 TaskSpecification.done(null);
 
         Predicate result = specification.toPredicate(root, query, builder);
-
         Assertions.assertNull(result);
-
         Mockito.verifyNoInteractions(root, builder);
     }
 
@@ -139,11 +133,9 @@ public class TaskSpecificationTests {
                 TaskSpecification.priority(Priority.HIGH);
 
         Predicate result = specification.toPredicate(root, query, builder);
-
         Assertions.assertNotNull(result);
         Assertions.assertEquals(predicate, result);
-
-        Mockito.verify(root).get("priority");
+        Mockito.verify(root).<Priority>get("priority");
         Mockito.verify(builder).equal(priorityPath, Priority.HIGH);
     }
 
@@ -154,9 +146,7 @@ public class TaskSpecificationTests {
                 TaskSpecification.priority(null);
 
         Predicate result = specification.toPredicate(root, query, builder);
-
         Assertions.assertNull(result);
-
         Mockito.verifyNoInteractions(root, builder);
     }
 
@@ -176,12 +166,10 @@ public class TaskSpecificationTests {
                 TaskSpecification.category(1L);
 
         Predicate result = specification.toPredicate(root, query, builder);
-
         Assertions.assertNotNull(result);
         Assertions.assertEquals(predicate, result);
-
-        Mockito.verify(root).get("category");
-        Mockito.verify(categoryPath).get("id");
+        Mockito.verify(root).<Category>get("category");
+        Mockito.verify(categoryPath).<Long>get("id");
         Mockito.verify(builder).equal(categoryIdPath, 1L);
     }
 
@@ -192,9 +180,7 @@ public class TaskSpecificationTests {
                 TaskSpecification.category(null);
 
         Predicate result = specification.toPredicate(root, query, builder);
-
         Assertions.assertNull(result);
-
         Mockito.verifyNoInteractions(root, builder);
     }
 }
