@@ -73,4 +73,28 @@ public class CategoryRepositoryTests {
         assertEquals(categoryEntity.getColor(), summary.color());
         assertEquals(expected, summary.quantity());
     }
+
+    @Test
+    public void findCategorySummaryShouldReturnCategoryWithZeroTasks() {
+
+        //Testando LEFT JOIN
+        Category categoryWithoutTasks = new Category();
+        categoryWithoutTasks.setName("Sem tarefas");
+        categoryWithoutTasks.setColor("#000000");
+
+        Category savedCategory = categoryRepository.save(categoryWithoutTasks);
+
+        List<CategorySummaryDTO> result = categoryRepository.findCategorySummary();
+
+        CategorySummaryDTO summary = result.stream()
+                .filter(category ->
+                        category.id().equals(savedCategory.getId()))
+                .findFirst()
+                .orElseThrow();
+
+        assertEquals(categoryWithoutTasks.getId(), summary.id());
+        assertEquals(categoryWithoutTasks.getName(), summary.name());
+        assertEquals(categoryWithoutTasks.getColor(),summary.color());
+        assertEquals(0L,summary.quantity());
+    }
 }

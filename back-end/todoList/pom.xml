@@ -116,18 +116,15 @@
                         <configuration>
                             <excludes>
                                 <!-- NÃO testar -->
-                                <exclude>**/entities/**</exclude>
                                 <exclude>**/dtos/**</exclude>
-                                <exclude>**/config/**</exclude>
+                                <exclude>**/entities/**</exclude>
                                 <exclude>**/exceptions/**</exclude>
-
+                                <exclude>**/config/**</exclude>
                                 <!-- Classe principal -->
                                 <exclude>**/TodoListApplication.class</exclude>
                             </excludes>
                         </configuration>
-
                     </execution>
-
                 </executions>
             </plugin>
         </plugins>
