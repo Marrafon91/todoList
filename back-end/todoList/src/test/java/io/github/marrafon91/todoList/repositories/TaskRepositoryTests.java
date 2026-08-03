@@ -24,18 +24,18 @@ public class TaskRepositoryTests {
     @Autowired
     private CategoryRepository categoryRepository;
 
-    private Task task;
     private Category category;
+    private Task task;
 
     @BeforeEach
     public void setup() {
-
         category = new Category();
         category.setName("Trabalho");
         category.setColor("#2563EB");
 
         category = categoryRepository.save(category);
 
+        // Tarefa pendente
         task = new Task();
         task.setTitle("Estudar Java");
         task.setDescription("Estudar testes");
@@ -45,6 +45,17 @@ public class TaskRepositoryTests {
         task.setCategory(category);
 
         task = taskRepository.save(task);
+
+        // Tarefa concluída
+        Task completedTask = new Task();
+        completedTask.setTitle("Estudar Spring Boot");
+        completedTask.setDescription("Estudar JPA");
+        completedTask.setDone(true);
+        completedTask.setPriority(Priority.MEDIUM);
+        completedTask.setDueDate(LocalDate.now());
+        completedTask.setCategory(category);
+
+        taskRepository.save(completedTask);
     }
 
     @Test
@@ -113,5 +124,33 @@ public class TaskRepositoryTests {
         assertEquals(category.getId(), foundTask.getCategory().getId());
         assertEquals("Trabalho", foundTask.getCategory().getName());
         assertEquals("#2563EB", foundTask.getCategory().getColor());
+    }
+
+    @Test
+    public void countByDoneFalseShouldReturnNumberOfPendingTasks() {
+
+        Long result = taskRepository.countByDoneFalse();
+
+        long expected = taskRepository.findAll()
+                .stream()
+                .filter(task -> !task.isDone())
+                .count();
+
+        assertNotNull(result);
+        assertEquals(expected, result);
+    }
+
+    @Test
+    public void countByDoneTrueShouldReturnNumberOfCompletedTasks() {
+
+        Long result = taskRepository.countByDoneTrue();
+
+        long expected = taskRepository.findAll()
+                .stream()
+                .filter(Task::isDone)
+                .count();
+
+        assertNotNull(result);
+        assertEquals(expected, result);
     }
 }

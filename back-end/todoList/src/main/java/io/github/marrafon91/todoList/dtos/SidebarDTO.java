@@ -8,7 +8,6 @@ public record SidebarDTO(
         Long completedTasks,
 
         List<PrioritySummaryDTO> priorities,
-
         List<CategorySummaryDTO> categories
 ) {
 }
