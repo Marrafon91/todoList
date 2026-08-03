@@ -33,4 +33,16 @@ public class UserRepositoryTests {
         assertEquals("guilherme@gmail.com", foundUser.getEmail());
         assertEquals("123456", foundUser.getPassword());
     }
+
+    @Test
+    public void findByNameShouldReturnUsersWhenNameIsPartial() {
+
+        List<User> result = userRepository.findByName("Guil");
+
+        assertNotNull(result);
+        assertFalse(result.isEmpty());
+
+        assertTrue(result.stream().anyMatch(user ->
+                user.getName().equals("Guilherme")));
+    }
 }
