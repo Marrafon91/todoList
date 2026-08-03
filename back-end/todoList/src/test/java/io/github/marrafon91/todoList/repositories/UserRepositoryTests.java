@@ -1,7 +1,6 @@
 package io.github.marrafon91.todoList.repositories;
 
 import io.github.marrafon91.todoList.entities.User;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
@@ -44,5 +43,25 @@ public class UserRepositoryTests {
 
         assertTrue(result.stream().anyMatch(user ->
                 user.getName().equals("Guilherme")));
+    }
+
+    @Test
+    public void findByNameShouldIgnoreCase() {
+
+        List<User> result = userRepository.findByName("GUILHERME");
+
+        assertNotNull(result);
+        assertFalse(result.isEmpty());
+
+        assertTrue(result.stream().anyMatch(user ->
+                        user.getName().equals("Guilherme")));
+    }
+
+    @Test
+    public void findByNameShouldReturnEmptyListWhenUserDoesNotExist() {
+        List<User> result = userRepository.findByName("Abelardo");
+
+        assertNotNull(result);
+        assertTrue(result.isEmpty());
     }
 }
