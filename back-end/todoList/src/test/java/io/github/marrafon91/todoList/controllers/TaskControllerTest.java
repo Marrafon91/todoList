@@ -30,11 +30,13 @@ class TaskControllerTest {
 
     private List<Task> tasks;
     private Long existingId;
+    private Long nonExistingId;
 
     @BeforeEach
     void setUp() {
         tasks = taskRepository.findAll();
         existingId = tasks.getFirst().getId();
+        nonExistingId = 999L;
     }
 
     @Test
@@ -55,5 +57,32 @@ class TaskControllerTest {
         result.andExpect(jsonPath("$[0].priority").value(tasks.getFirst().getPriority().name()));
         result.andExpect(jsonPath("$[0].createdAt").value(tasks.getFirst().getCreatedAt().withNano(0).toString()));
         result.andExpect(jsonPath("$[0].dueDate").value(tasks.getFirst().getDueDate().toString()));
+    }
+
+    @Test
+    void findByIdShouldReturnTaskWhenIdExists() throws Exception {
+
+        ResultActions result = mockMvc.perform(
+                get("/api/tasks/{id}", existingId)
+                .accept(MediaType.APPLICATION_JSON)
+        );
+
+        result.andExpect(status().isOk());
+        result.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
+        result.andExpect(jsonPath("$.id").value(existingId));
+        result.andExpect(jsonPath("$.title").value(tasks.getFirst().getTitle()));
+        result.andExpect(jsonPath("$.description").value(tasks.getFirst().getDescription()));
+
+    }
+
+    @Test
+    void findByIdShouldReturnNotFoundWhenIdDoesNotExist() throws Exception {
+        ResultActions result = mockMvc.perform(
+                get("/api/tasks/{id}", nonExistingId)
+                .accept(MediaType.APPLICATION_JSON)
+        );
+
+        result.andExpect(status().isNotFound());
+        result.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
     }
 }
