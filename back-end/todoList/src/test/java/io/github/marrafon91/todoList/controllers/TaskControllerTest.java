@@ -53,7 +53,9 @@ class TaskControllerTest {
         result.andExpect(jsonPath("$.length()").value(tasks.size()));
         result.andExpect(jsonPath("$[0].id").value(tasks.getFirst().getId()));
         result.andExpect(jsonPath("$[0].title").value(tasks.getFirst().getTitle()));
+        result.andExpect(jsonPath("$[1].title").value("Organizar documentos"));
         result.andExpect(jsonPath("$[0].description").value(tasks.getFirst().getDescription()));
+        result.andExpect(jsonPath("$[1].description").value(tasks.get(1).getDescription()));
         result.andExpect(jsonPath("$[0].done").value(tasks.getFirst().isDone()));
         result.andExpect(jsonPath("$[0].priority").value(tasks.getFirst().getPriority().name()));
         result.andExpect(jsonPath("$[0].createdAt").value(tasks.getFirst().getCreatedAt().withNano(0).toString()));
