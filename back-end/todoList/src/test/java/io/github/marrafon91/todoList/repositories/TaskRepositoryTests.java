@@ -83,21 +83,30 @@ public class TaskRepositoryTests {
     @Test
     public void findAllShouldReturnTasksFilteredByTitleWithCategory() {
 
-        Specification<Task> specification = TaskSpecification.titleContains(task.getTitle());
+        Specification<Task> specification =
+                TaskSpecification.titleContains("Java");
 
         List<Task> result = taskRepository.findAll(specification);
 
         assertNotNull(result);
         assertFalse(result.isEmpty());
+
         assertTrue(result.stream()
-                .allMatch(task -> task.getTitle().toLowerCase().contains(task.getTitle().toLowerCase())));
+                .allMatch(t -> t.getTitle()
+                        .toLowerCase()
+                        .contains("java")));
 
         Task foundTask = result.stream()
-                .filter(task -> task.getTitle().equalsIgnoreCase(task.getTitle()))
+                .filter(t -> t.getId().equals(task.getId()))
                 .findFirst()
                 .orElseThrow();
 
+        assertEquals(task.getId(), foundTask.getId());
+        assertEquals(task.getTitle(), foundTask.getTitle());
+
         assertNotNull(foundTask.getCategory());
+
+        assertEquals(category.getId(), foundTask.getCategory().getId());
         assertEquals(category.getName(), foundTask.getCategory().getName());
         assertEquals(category.getColor(), foundTask.getCategory().getColor());
     }
@@ -113,17 +122,19 @@ public class TaskRepositoryTests {
 
         List<Task> result = taskRepository.findAll(specification);
 
-        long expected = taskRepository.findAll(specification).size();
-
         assertNotNull(result);
         assertFalse(result.isEmpty());
-        assertEquals(expected, result.size());
 
-        Task foundTask = result.getFirst();
+        Task foundTask = result.stream()
+                .filter(t -> t.getId().equals(task.getId()))
+                .findFirst()
+                .orElseThrow();
 
+        assertEquals(task.getId(), foundTask.getId());
         assertEquals(task.getTitle(), foundTask.getTitle());
         assertFalse(foundTask.isDone());
         assertEquals(Priority.HIGH, foundTask.getPriority());
+
         assertNotNull(foundTask.getCategory());
         assertEquals(category.getId(), foundTask.getCategory().getId());
         assertEquals(category.getName(), foundTask.getCategory().getName());
@@ -180,6 +191,20 @@ public class TaskRepositoryTests {
         long expected = taskRepository.findAll()
                 .stream()
                 .filter(Task::isDone)
+                .count();
+
+        assertNotNull(result);
+        assertEquals(expected, result);
+    }
+
+    @Test
+    public void countHighPriorityTasksShouldReturnNumberOfHighPriorityTasks() {
+
+        Long result = taskRepository.countHighPriorityTasks();
+
+        long expected = taskRepository.findAll()
+                .stream()
+                .filter(t-> t.getPriority() == Priority.HIGH)
                 .count();
 
         assertNotNull(result);
