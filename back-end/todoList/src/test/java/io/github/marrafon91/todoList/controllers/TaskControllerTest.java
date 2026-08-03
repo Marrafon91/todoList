@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
@@ -64,7 +65,7 @@ class TaskControllerTest {
 
         ResultActions result = mockMvc.perform(
                 get("/api/tasks/{id}", existingId)
-                .accept(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
         );
 
         result.andExpect(status().isOk());
@@ -79,10 +80,39 @@ class TaskControllerTest {
     void findByIdShouldReturnNotFoundWhenIdDoesNotExist() throws Exception {
         ResultActions result = mockMvc.perform(
                 get("/api/tasks/{id}", nonExistingId)
-                .accept(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
         );
 
         result.andExpect(status().isNotFound());
         result.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
+    }
+
+    @Test
+    void toggleDoneShouldChangeTaskDone() throws Exception {
+
+        Task task = tasks.getFirst();
+        boolean doneBefore = task.isDone();
+
+        mockMvc.perform(
+                        patch("/api/tasks/{id}/done", task.getId())
+                                .accept(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(task.getId()))
+                .andExpect(jsonPath("$.done").value(!doneBefore));
+    }
+
+    @Test
+    void toggleDoneShouldToggleTaskDoneTwice() throws Exception {
+
+        Task task = tasks.getFirst();
+        boolean doneBefore = task.isDone();
+
+        mockMvc.perform(patch("/api/tasks/{id}/done", task.getId()))
+                .andExpect(status().isOk());
+
+        mockMvc.perform(patch("/api/tasks/{id}/done", task.getId()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.done").value(doneBefore));
     }
 }
