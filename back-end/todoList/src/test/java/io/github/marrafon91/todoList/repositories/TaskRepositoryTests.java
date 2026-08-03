@@ -1,5 +1,6 @@
 package io.github.marrafon91.todoList.repositories;
 
+import io.github.marrafon91.todoList.dtos.PrioritySummaryDTO;
 import io.github.marrafon91.todoList.entities.Category;
 import io.github.marrafon91.todoList.entities.Priority;
 import io.github.marrafon91.todoList.entities.Task;
@@ -204,10 +205,29 @@ public class TaskRepositoryTests {
 
         long expected = taskRepository.findAll()
                 .stream()
-                .filter(t-> t.getPriority() == Priority.HIGH)
+                .filter(t -> t.getPriority() == Priority.HIGH)
                 .count();
 
         assertNotNull(result);
         assertEquals(expected, result);
+    }
+
+    @Test
+    public void findPrioritySummaryHighShouldReturnHighPrioritySummary() {
+        List<PrioritySummaryDTO> result = taskRepository.findPrioritySummaryHigh();
+
+        assertNotNull(result);
+        assertFalse(result.isEmpty());
+
+        PrioritySummaryDTO summary = result.getFirst();
+
+        long expected = taskRepository.findAll()
+                .stream()
+                .filter(t -> t.getPriority() == Priority.HIGH)
+                .count();
+
+        assertEquals(Priority.HIGH, summary.priority());
+        assertEquals("Alta prioridade", summary.label());
+        assertEquals(expected, summary.quantity());
     }
 }
