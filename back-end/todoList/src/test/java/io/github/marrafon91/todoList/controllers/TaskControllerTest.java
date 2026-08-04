@@ -124,14 +124,14 @@ class TaskControllerTest {
                 post("/api/tasks")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
-                            {
-                                "title": "Estudar Java",
-                                "description": "Estudar testes de controller",
-                                "priority": "HIGH",
-                                "categoryId": 1,
-                                "dueDate": "2026-08-10"
-                            }
-                            """)
+                                {
+                                    "title": "Estudar Java",
+                                    "description": "Estudar testes de controller",
+                                    "priority": "HIGH",
+                                    "categoryId": 1,
+                                    "dueDate": "2026-08-10"
+                                }
+                                """)
                         .accept(MediaType.APPLICATION_JSON)
         );
 
@@ -147,4 +147,25 @@ class TaskControllerTest {
         result.andExpect(header().exists("Location"));
     }
 
+    @Test
+    void insertShouldReturnUnprocessableContentWhenTaskFieldIsWrong() throws Exception {
+
+        ResultActions result = mockMvc.perform(
+                post("/api/tasks")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                    "title": " ",
+                                    "description": " ",
+                                    "priority": "HIGH",
+                                    "categoryId": 1,
+                                    "dueDate": "2026-08-10"
+                                }
+                                """)
+                        .accept(MediaType.APPLICATION_JSON)
+        );
+        result.andExpect(status().isUnprocessableContent());
+        result.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
+        result.andExpect(jsonPath("$.errors").isArray());
+    }
 }
