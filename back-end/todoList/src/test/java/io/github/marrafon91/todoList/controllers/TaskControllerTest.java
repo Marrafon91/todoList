@@ -14,8 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
@@ -117,4 +116,35 @@ class TaskControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.done").value(doneBefore));
     }
+
+    @Test
+    void insertShouldReturnCreatedWhenTaskIsValid() throws Exception {
+
+        ResultActions result = mockMvc.perform(
+                post("/api/tasks")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                            {
+                                "title": "Estudar Java",
+                                "description": "Estudar testes de controller",
+                                "priority": "HIGH",
+                                "categoryId": 1,
+                                "dueDate": "2026-08-10"
+                            }
+                            """)
+                        .accept(MediaType.APPLICATION_JSON)
+        );
+
+        result.andExpect(status().isCreated());
+        result.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
+
+        result.andExpect(jsonPath("$.id").exists());
+        result.andExpect(jsonPath("$.title").value("Estudar Java"));
+        result.andExpect(jsonPath("$.description").value("Estudar testes de controller"));
+        result.andExpect(jsonPath("$.done").value(false));
+        result.andExpect(jsonPath("$.priority").value("HIGH"));
+
+        result.andExpect(header().exists("Location"));
+    }
+
 }
