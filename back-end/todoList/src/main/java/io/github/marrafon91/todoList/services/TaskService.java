@@ -134,7 +134,7 @@ public class TaskService {
 
         task.setCategory(getCategory(dto.categoryId()));
 
-        task.setDone(dto.done());
+//        task.setDone(dto.done());
     }
 }
 

@@ -22,8 +22,8 @@ public record TaskUpdateDTO(
         Long categoryId,
 
         @NotNull(message = "A data de vencimento é obrigatória")
-        LocalDate dueDate,
+        LocalDate dueDate
 
-        boolean done
+//        boolean done
 ) {
 }

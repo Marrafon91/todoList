@@ -78,8 +78,7 @@ public class TaskServiceTests {
                 "Aprender mais sobre Programação",
                 Priority.MEDIUM,
                 category.getId(),
-                LocalDate.now(),
-                false
+                LocalDate.now()
         );
     }
 
@@ -222,7 +221,6 @@ public class TaskServiceTests {
         Assertions.assertEquals(taskUpdateDTO.description(), result.description());
         Assertions.assertEquals(taskUpdateDTO.priority(), result.priority());
         Assertions.assertEquals(taskUpdateDTO.dueDate(), result.dueDate());
-        Assertions.assertEquals(taskUpdateDTO.done(), result.done());
 
         Assertions.assertNotNull(result.category());
         Assertions.assertEquals(category.getId(), result.category().id());
