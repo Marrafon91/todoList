@@ -128,7 +128,7 @@ class TaskControllerTest {
                                     "title": "Estudar Java",
                                     "description": "Estudar testes de controller",
                                     "priority": "HIGH",
-                                    "categoryId": 1,
+                                    "categoryId": 2,
                                     "dueDate": "2026-08-10"
                                 }
                                 """)
@@ -158,7 +158,7 @@ class TaskControllerTest {
                                     "title": " ",
                                     "description": " ",
                                     "priority": "HIGH",
-                                    "categoryId": 1,
+                                    "categoryId": 2,
                                     "dueDate": "2026-08-10"
                                 }
                                 """)
@@ -167,5 +167,82 @@ class TaskControllerTest {
         result.andExpect(status().isUnprocessableContent());
         result.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
         result.andExpect(jsonPath("$.errors").isArray());
+    }
+
+    @Test
+    void updateShouldReturnOkWhenTaskIsValid() throws Exception {
+
+        ResultActions result = mockMvc.perform(
+                put("/api/tasks/{id}", existingId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                            {
+                                "title": "Fazer academia",
+                                "description": "Treinar 5x por semana",
+                                "done": true,
+                                "priority": "LOW",
+                                "categoryId": 3,
+                                "dueDate": "2026-10-18"
+                            }
+                            """)
+                        .accept(MediaType.APPLICATION_JSON)
+        );
+
+        result.andExpect(status().isOk());
+        result.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
+
+        result.andExpect(jsonPath("$.id").value(existingId));
+        result.andExpect(jsonPath("$.title").value("Fazer academia"));
+        result.andExpect(jsonPath("$.description").value("Treinar 5x por semana"));
+        result.andExpect(jsonPath("$.done").value(true));
+        result.andExpect(jsonPath("$.priority").value("LOW"));
+        result.andExpect(jsonPath("$.category.id").value(3));
+    }
+
+    @Test
+    void updateShouldReturnUnprocessableContentWhenTaskFieldIsWrong() throws Exception {
+
+        ResultActions result = mockMvc.perform(
+                put("/api/tasks/{id}", existingId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                            {
+                                "title": " ",
+                                "description": "Te",
+                                "done": true,
+                                "priority": "LOW",
+                                "categoryId": 3,
+                                "dueDate": "2026-10-18"
+                            }
+                            """)
+                        .accept(MediaType.APPLICATION_JSON)
+        );
+
+        result.andExpect(status().isUnprocessableContent());
+        result.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
+        result.andExpect(jsonPath("$.errors").isArray());
+    }
+
+    @Test
+    void updateShouldReturnNotFoundWhenTaskIdDoesNotExist() throws Exception {
+
+        ResultActions result = mockMvc.perform(
+                put("/api/tasks/{id}", nonExistingId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                            {
+                                "title": "Fazer academia",
+                                "description": "Treinar 5x por semana",
+                                "done": true,
+                                "priority": "LOW",
+                                "categoryId": 3,
+                                "dueDate": "2026-10-18"
+                            }
+                            """)
+                        .accept(MediaType.APPLICATION_JSON)
+        );
+
+        result.andExpect(status().isNotFound());
+        result.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
     }
 }
