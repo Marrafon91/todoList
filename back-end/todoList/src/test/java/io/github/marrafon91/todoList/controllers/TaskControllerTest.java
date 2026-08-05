@@ -245,4 +245,22 @@ class TaskControllerTest {
         result.andExpect(status().isNotFound());
         result.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
     }
+
+    @Test
+    void deleteShouldReturnNoContentWhenTaskExists() throws Exception {
+
+        mockMvc.perform(
+                        delete("/api/tasks/{id}", existingId)
+                )
+                .andExpect(status().isNoContent());
+    }
+
+    @Test
+    void deleteShouldReturnNotFoundWhenTaskDoesNotExist() throws Exception {
+
+        mockMvc.perform(
+                        delete("/api/tasks/{id}", nonExistingId)
+                )
+                .andExpect(status().isNotFound());
+    }
 }
