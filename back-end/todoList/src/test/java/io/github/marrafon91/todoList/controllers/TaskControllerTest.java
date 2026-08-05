@@ -263,4 +263,27 @@ class TaskControllerTest {
                 )
                 .andExpect(status().isNotFound());
     }
+
+    @Test
+    void deleteAllShouldReturnNoContent() throws Exception {
+
+        mockMvc.perform(
+                        delete("/api/tasks/delete-all")
+                )
+                .andExpect(status().isNoContent())
+                .andExpect(content().string(""));
+    }
+
+    @Test
+    void deleteAllShouldRemoveAllTasks() throws Exception {
+
+        mockMvc.perform(delete("/api/tasks/delete-all"))
+                .andExpect(status().isNoContent());
+
+        mockMvc.perform(get("/api/tasks")
+                        .accept(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isEmpty());
+    }
 }
