@@ -1,5 +1,5 @@
-INSERT INTO tb_user (name, email, password) VALUES ('Guilherme', 'guilherme@gmail.com', '123456');
-INSERT INTO tb_user (name, email, password) VALUES ('Maria', 'maria@gmail.com', '123456');
+INSERT INTO tb_user (name, email, password) VALUES ('Guilherme', 'guilherme@gmail.com', '$2a$10$iDmM6jJjiY33EfO9HB9NbOg9nnZageUXxNyIsvJzrPDHpHDcLatES');
+INSERT INTO tb_user (name, email, password) VALUES ('Maria', 'maria@gmail.com', '$2a$10$iDmM6jJjiY33EfO9HB9NbOg9nnZageUXxNyIsvJzrPDHpHDcLatES');
 
 INSERT INTO tb_category (name, color) VALUES ('Trabalho', '#2563EB');
 INSERT INTO tb_category (name, color) VALUES ('Estudos', '#22C55E');

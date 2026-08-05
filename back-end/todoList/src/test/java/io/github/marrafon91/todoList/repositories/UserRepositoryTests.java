@@ -30,7 +30,7 @@ public class UserRepositoryTests {
 
         assertEquals("Guilherme", foundUser.getName());
         assertEquals("guilherme@gmail.com", foundUser.getEmail());
-        assertEquals("123456", foundUser.getPassword());
+        assertEquals("$2a$10$iDmM6jJjiY33EfO9HB9NbOg9nnZageUXxNyIsvJzrPDHpHDcLatES", foundUser.getPassword());
     }
 
     @Test
