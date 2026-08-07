@@ -8,7 +8,7 @@ import jakarta.validation.constraints.Size;
 public record CategoryInsertDTO(
 
         @Schema(
-                description = "Descrição da categoria",
+                description = "Nome da categoria.",
                 example = "Casa"
         )
         @NotBlank(message = "O nome da categoria é obrigatório")
@@ -16,7 +16,7 @@ public record CategoryInsertDTO(
         String name,
 
         @Schema(
-                description = "Hexadecimal da cor",
+                description = "Cor da categoria em formato hexadecimal.",
                 example = "#EF4444"
         )
         @NotBlank(message = "A cor é obrigatória")

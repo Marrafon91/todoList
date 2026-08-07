@@ -5,26 +5,26 @@ import io.swagger.v3.oas.annotations.media.Schema;
 public record CategorySummaryDTO(
 
         @Schema(
-                description = "ID da categoria",
+                description = "Identificador único da categoria.",
                 example = "2"
         )
         Long id,
 
         @Schema(
-                description = "Descrição da categoria",
+                description = "Nome da categoria.",
                 example = "Casa"
         )
         String name,
 
         @Schema(
-                description = "Hexadecimal da cor",
+                description = "Cor da categoria em formato hexadecimal.",
                 example = "#EF4444"
         )
         String color,
 
         @Schema(
-                description = "Quantidade de Tarefas por Categoria",
-                example = "Casa tem 9 tarefas"
+                description = "Quantidade de tarefas vinculadas à categoria.",
+                example = "9"
         )
         Long quantity
 ) {

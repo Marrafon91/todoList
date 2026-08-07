@@ -24,7 +24,8 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
-    @Operation( summary = "Lista de Categorias",
+    @Operation(
+            summary = "Lista de Categorias",
             description = "Retorna todas as categorias cadastradas."
     )
     @ApiResponses({
