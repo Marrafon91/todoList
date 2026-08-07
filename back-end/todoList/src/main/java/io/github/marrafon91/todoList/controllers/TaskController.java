@@ -30,19 +30,24 @@ public class TaskController {
     @Autowired
     private TaskService taskService;
 
-    @Operation( summary = "Listar tarefas", description = "Retorna todas as tarefas cadastradas podendo ser filtradas por título, status, prioridade e categoria."
+    @Operation( summary = "Listar tarefas",
+            description = "Retorna todas as tarefas cadastradas podendo ser filtradas por título, status, prioridade e categoria."
     )
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Lista de tarefas retornada com sucesso")
     })
     @GetMapping(produces = "application/json")
     public ResponseEntity<List<TaskDTO>> findAll(
+
             @Parameter(description = "Filtrar pelo título")
             @RequestParam(required = false) String title,
+
             @Parameter(description = "Filtrar por tarefa concluída")
             @RequestParam(required = false) Boolean done,
+
             @Parameter(description = "Filtrar por prioridade")
             @RequestParam(required = false) Priority priority,
+
             @Parameter(description = "Filtrar por categoria")
             @RequestParam(required = false) Long categoryId
     ) {
@@ -78,7 +83,7 @@ public class TaskController {
             description = "Alterna automaticamente entre concluída e pendente."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Status atualizado true/false"),
+            @ApiResponse(responseCode = "200", description = "Status atualizado"),
             @ApiResponse(responseCode = "404", description = "Tarefa não encontrada")
     })
     @PatchMapping(value = "/{id}/done", produces = "application/json")
@@ -157,12 +162,9 @@ public class TaskController {
     })
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteById(
-
             @Parameter(description = "ID da tarefa", example = "1")
             @PathVariable Long id
-
     ) {
-
         taskService.delete(id);
         return ResponseEntity.noContent().build();
     }
