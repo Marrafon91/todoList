@@ -158,7 +158,8 @@ public class TaskController {
     )
     @ApiResponses({
             @ApiResponse(responseCode = "204", description = "Tarefa removida"),
-            @ApiResponse(responseCode = "404", description = "Tarefa não encontrada")
+            @ApiResponse(responseCode = "404", description = "Tarefa não encontrada"),
+            @ApiResponse(responseCode = "409", description = "Erro de integridade referencial")
     })
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteById(
