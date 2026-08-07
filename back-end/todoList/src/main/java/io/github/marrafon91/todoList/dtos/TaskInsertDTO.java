@@ -40,7 +40,7 @@ public record TaskInsertDTO(
         Long categoryId,
 
         @Schema(
-                description = "Data de vencimento",
+                description = "Data prevista para conclusão da tarefa.",
                 example = "2027-08-15"
         )
         @FutureOrPresent(message = "A data de vencimento é obrigatória, deve ser uma data futura")

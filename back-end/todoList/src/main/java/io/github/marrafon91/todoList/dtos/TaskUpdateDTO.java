@@ -41,7 +41,7 @@ public record TaskUpdateDTO(
         Long categoryId,
 
         @Schema(
-                description = "Data de vencimento",
+                description = "Data prevista para conclusão da tarefa.",
                 example = "2027-08-15"
         )
         @NotNull(message = "A data de vencimento é obrigatória")
