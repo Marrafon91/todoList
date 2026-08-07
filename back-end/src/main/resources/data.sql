@@ -123,6 +123,9 @@ INSERT INTO tb_task
 VALUES
     ('Correr no parque', 'Fazer corrida ao ar livre', true, CURRENT_TIMESTAMP, DATE '2026-07-29', 'LOW', 1, 4);
 
+-- DIVERSOS (4 tarefas) categoria_id = 5
+
+
 INSERT INTO tb_task
 (title, description, done, created_at, due_date, priority, user_id, category_id)
 VALUES
