@@ -14,18 +14,18 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/dashboard")
-@Tag(name = "Dashboard", description = "Operações relacionadas ao gerenciamento do Dashboard/Header.")
+@Tag(name = "Dashboard", description = "Operações relacionadas aos indicadores do Dashboard.")
 public class DashboardController {
 
     @Autowired
     DashboardService dashboardService;
 
     @Operation(
-            summary = "Lista de Tarefas no Cabeçalho",
-            description = "Retorna todas as tarefas cadastradas podendo ser filtradas por Total, Pendentes, Concluídas e Alta prioridade."
+            summary = "Obter informações do Dashboard",
+            description = "Retorna a saudação, data atual, quantidade de tarefas pendentes, tarefas de alta prioridade e os indicadores exibidos nos cards do Dashboard."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Lista de Tarefas retornada com sucesso")
+            @ApiResponse(responseCode = "200", description = "Informações do Dashboard retornadas com sucesso")
     })
 
     @GetMapping(produces = "application/json")

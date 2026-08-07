@@ -18,7 +18,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/categories")
-@Tag(name = "Categorias", description = "Operações relacionadas ao gerenciamento das Categorias.")
+@Tag(
+        name = "Categorias",
+        description = "Operações relacionadas ao gerenciamento das Categorias."
+)
 public class CategoryController {
 
     @Autowired
@@ -26,7 +29,7 @@ public class CategoryController {
 
     @Operation(
             summary = "Lista de Categorias",
-            description = "Retorna todas as categorias cadastradas."
+            description = "Retorna todas as categorias cadastradas no sistema."
     )
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Lista de categorias retornada com sucesso")
@@ -39,15 +42,18 @@ public class CategoryController {
 
     @Operation(
             summary = "Buscar Categorias por ID",
-            description = "Retorna uma categoria específica pelo seu ID."
+            description = "Retorna uma categoria específica através do seu identificador."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "categoria encontrada"),
-            @ApiResponse(responseCode = "404", description = "categoria não encontrada")
+            @ApiResponse(responseCode = "200", description = "Categoria encontrada com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Categoria não encontrada")
     })
     @GetMapping(value = "/{id}", produces = "application/json")
     public ResponseEntity<CategoryDTO> findById(
-            @Parameter(description = "ID da tarefa", example = "1")
+            @Parameter(
+                    description = "ID da categoria",
+                    example = "1"
+            )
             @PathVariable Long id
     ) {
         CategoryDTO dto = categoryService.findCategoryById(id);
